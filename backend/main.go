@@ -17,10 +17,10 @@ import (
 
 type ToDoItem struct {
 	gorm.Model
-	Content string `json:"content" gorm:"not null"`
+	Content string ` gorm:"not null"`
 
-	Finished bool `json:"finished"`
-	ID       uint `gorm:"primarykey" json:"id"`
+	Finished bool ``
+	ID       uint `gorm:"primarykey"`
 }
 
 func main() {
