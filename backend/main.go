@@ -37,5 +37,10 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("%#v\n", db)
-	db.AutoMigrate(&ToDoItem{})
+	err = db.AutoMigrate(&ToDoItem{})
+	if err != nil {
+		panic(err)
+	}
+	db.Create(&ToDoItem{Content: "hello world!", Finished: false})
+
 }
