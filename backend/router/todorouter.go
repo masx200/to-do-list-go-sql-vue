@@ -47,7 +47,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 	r.DELETE("/todoitem", func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
-			c.String(400, "expect id not found")
+			c.String(400, "expect id but not found")
 			return
 		}
 		id, err := strconv.Atoi(qsid)
@@ -67,7 +67,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 	r.PATCH("/todoitem", func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
-			c.String(400, "expect id not found")
+			c.String(400, "expect id but not found")
 			return
 		}
 		id, err := strconv.Atoi(qsid)
@@ -76,13 +76,19 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 			c.String(400, err.Error())
 			return
 		}
-		var item ToDoItem
+		var item = new(ToDoItem)
 		err = c.ShouldBindJSON(&item)
 		if err != nil {
 			c.String(400, err.Error())
 			return
 		}
+
 		err = operations.UpdateItem(db, &item, uint(id))
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
+		item, err = operations.GetItem(db, item, uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
