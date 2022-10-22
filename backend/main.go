@@ -25,6 +25,7 @@ type ToDoItem struct {
 func main() {
 	rand.Seed(time.Now().Unix())
 	fmt.Println("config")
+	fmt.Print("\n\n")
 	config := map[string]string{}
 	text, err := os.ReadFile("./config.json")
 	if err != nil {
@@ -40,6 +41,7 @@ func main() {
 	}
 	println(dsn)
 	fmt.Println("connect")
+	fmt.Print("\n\n")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -50,11 +52,13 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("create")
+	fmt.Print("\n\n")
 	item1 := &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}
 	result := db.Create(item1)
 	fmt.Printf("%#v\n", item1)
 	fmt.Printf("%#v\n", result)
 	fmt.Println("find")
+	fmt.Print("\n\n")
 	items := []ToDoItem{}
 	result = db.Find(&items)
 	fmt.Printf("%#v\n", items)
