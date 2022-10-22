@@ -15,3 +15,5 @@
 # vendor/
 node_modules
 backend/.vscode/settings.json
+backend/tmp/runner-build-errors.log
+tmp

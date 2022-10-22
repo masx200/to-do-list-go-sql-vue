@@ -23,10 +23,10 @@ func main() {
 
 	fmt.Println("CreateItem", operations.CreateItem(db, &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}))
 	fmt.Println("FindItems")
-	fmt.Println(operations.FindItems(db, []ToDoItem{}))
+	fmt.Println(operations.FindItems(db, []ToDoItem{},30))
 	fmt.Println("CreateItem", operations.CreateItem(db, &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}))
 	fmt.Println("UpdateItem", operations.UpdateItem(db, &ToDoItem{Content: "changed!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: true}, 2))
 	fmt.Println("FindItems")
-	fmt.Println(operations.FindItems(db, []ToDoItem{}))
+	fmt.Println(operations.FindItems(db, []ToDoItem{},30))
 	fmt.Println("DeleteItem", operations.DeleteItem(db, &ToDoItem{}, 1))
 }

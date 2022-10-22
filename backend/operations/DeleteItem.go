@@ -22,11 +22,11 @@ func UpdateItem[T any](db *gorm.DB, item *T, id uint) *gorm.DB {
 	return result
 }
 
-func FindItems[T any](db *gorm.DB, items []T) ([]T, *gorm.DB) {
+func FindItems[T any](db *gorm.DB, items []T,limit int) ([]T, *gorm.DB) {
 	fmt.Println("find")
 	fmt.Print("\n\n")
 
-	result := db.Limit(50).Find(&items)
+	result := db.Limit(limit).Find(&items)
 	fmt.Printf("%#v\n", items)
 	fmt.Printf("%#v\n", result)
 	return items, result
