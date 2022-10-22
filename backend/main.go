@@ -20,6 +20,10 @@ func main() {
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	TodoRoute(r, db)
+	r.GET("/", func(c *gin.Context) {
+
+		c.String(200, "home")
+	})
 	r.Run(":" + strconv.Itoa(config.Port))
 
 }
