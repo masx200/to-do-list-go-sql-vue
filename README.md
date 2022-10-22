@@ -1,20 +1,23 @@
 # to-do-list-go-sql-vue
 
 #### 介绍
+
 to-do-list-go-sql-vue
 
 #### 软件架构
+
 软件架构说明
 
+mysql
 
-#### 安装教程
+gin
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+gorm
 
-#### 使用说明
+vue
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+typescript
+
+element-plus
+
+protobuf

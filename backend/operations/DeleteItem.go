@@ -22,7 +22,7 @@ func UpdateItem[T any](db *gorm.DB, item *T, id uint) *gorm.DB {
 	return result
 }
 
-func FindItems[T any](db *gorm.DB, items []T,limit int) ([]T, *gorm.DB) {
+func FindItems[T any](db *gorm.DB, items []T, limit int) ([]T, *gorm.DB) {
 	fmt.Println("find")
 	fmt.Print("\n\n")
 
