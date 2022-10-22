@@ -2,6 +2,7 @@ package database
 
 import "gorm.io/driver/mysql"
 import "gorm.io/gorm"
+
 // import "fmt"
 
 func ConnectDatabase(dsn string, model any) *gorm.DB {
@@ -12,7 +13,7 @@ func ConnectDatabase(dsn string, model any) *gorm.DB {
 		panic(err)
 	}
 	// fmt.Printf("%#v\n", db)
-	
+
 	err = db.AutoMigrate(model)
 	if err != nil {
 		panic(err)
