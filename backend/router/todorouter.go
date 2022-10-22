@@ -16,6 +16,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		qsid := c.Query("id")
 
 		if len(qsid) != 0 {
+			defer c.Abort()
 			id, err := strconv.Atoi(qsid)
 
 			if err != nil {
@@ -30,6 +31,8 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 				c.JSON(200, item)
 			}
 			return
+		} else {
+			c.Next()
 		}
 
 	}, func(c *gin.Context) {
@@ -53,7 +56,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		} else {
 			c.JSON(200, tdi)
 		}
-
+		// return
 	})
 	r.POST("/todoitem", func(c *gin.Context) {
 		var item ToDoItem
@@ -68,7 +71,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		} else {
 			c.JSON(200, item)
 		}
-
+		// return
 	})
 
 	r.DELETE("/todoitem", func(c *gin.Context) {
@@ -95,7 +98,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		} else {
 			c.JSON(200, item)
 		}
-
+		// return
 	})
 	r.PATCH("/todoitem", func(c *gin.Context) {
 		qsid := c.Query("id")
@@ -127,6 +130,6 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		} else {
 			c.JSON(200, item)
 		}
-
+		// return
 	})
 }
