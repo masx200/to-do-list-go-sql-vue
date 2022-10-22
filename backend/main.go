@@ -22,7 +22,7 @@ func main() {
 	}
 	dsn, ok := config["dsn"]
 	if !ok {
-		panic(errors.New("dsn not found"))
+		panic(errors.New("config dsn not found"))
 	}
 	println(dsn)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
