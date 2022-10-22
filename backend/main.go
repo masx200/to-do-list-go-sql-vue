@@ -26,10 +26,20 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	dsn := loadConfig()
 	db := connectDatabase(dsn)
-	item1 := &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}
-	createItem(db, item1)
-	findItems(db)
-	updateItem(db, 1, &ToDoItem{Content: "changed!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: true})
+
+	fmt.Println("createItem", createItem(db, &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}))
+	fmt.Println("findItems")
+	fmt.Println(findItems(db))
+	fmt.Println("createItem", createItem(db, &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}))
+	fmt.Println("updateItem", updateItem(db, 2, &ToDoItem{Content: "changed!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: true}))
+	fmt.Println("findItems")
+	fmt.Println(findItems(db))
+	fmt.Println("deleteItem", deleteItem(db, 1))
+}
+func deleteItem(db *gorm.DB, id uint) *gorm.DB {
+	fmt.Println("delete")
+	fmt.Print("\n\n")
+	return db.Delete(&ToDoItem{}, id)
 }
 func updateItem(db *gorm.DB, id uint, item1 *ToDoItem) *gorm.DB {
 	fmt.Println("update")
