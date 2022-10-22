@@ -4,7 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"os"
+	"strconv"
+	"time"
+
+	"math/rand"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -18,12 +23,14 @@ type ToDoItem struct {
 }
 
 func main() {
+	rand.Seed(time.Now().Unix())
+	fmt.Println("config")
 	config := map[string]string{}
-	x, err := os.ReadFile("./config.json")
+	text, err := os.ReadFile("./config.json")
 	if err != nil {
 		panic(err)
 	}
-	err = json.Unmarshal(x, &config)
+	err = json.Unmarshal(text, &config)
 	if err != nil {
 		panic(err)
 	}
@@ -32,6 +39,7 @@ func main() {
 		panic(errors.New("config dsn not found"))
 	}
 	println(dsn)
+	fmt.Println("connect")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -41,6 +49,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	db.Create(&ToDoItem{Content: "hello world!", Finished: false})
-
+	fmt.Println("create")
+	item1 := &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}
+	result := db.Create(item1)
+	fmt.Printf("%#v\n", item1)
+	fmt.Printf("%#v\n", result)
+	fmt.Println("find")
+	items := []ToDoItem{}
+	result = db.Find(&items)
+	fmt.Printf("%#v\n", items)
+	fmt.Printf("%#v\n", result)
 }
