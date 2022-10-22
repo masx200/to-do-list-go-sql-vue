@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 
 // import "fmt"
 
-func ConnectDatabase(dsn string, model any) *gorm.DB {
+func ConnectDatabase(dsn string, model *any) *gorm.DB {
 	// fmt.Println("connect")
 	// fmt.Print("\n\n")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
