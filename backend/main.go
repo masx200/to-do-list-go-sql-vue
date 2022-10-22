@@ -25,6 +25,49 @@ type ToDoItem struct {
 
 func main() {
 	rand.Seed(time.Now().Unix())
+	dsn := loadConfig()
+	db := connectDatabase(dsn)
+	item1 := &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}
+	createItem(db, item1)
+	findItems(db)
+}
+
+func findItems(db *gorm.DB) ([]ToDoItem, *gorm.DB) {
+	fmt.Println("find")
+	fmt.Print("\n\n")
+	items := []ToDoItem{}
+	result := db.Limit(50).Find(&items)
+	fmt.Printf("%#v\n", items)
+	fmt.Printf("%#v\n", result)
+	return items, result
+}
+
+func createItem(db *gorm.DB, item1 *ToDoItem) *gorm.DB {
+	fmt.Println("create")
+	fmt.Print("\n\n")
+
+	result := db.Create(&item1)
+	fmt.Printf("%#v\n", item1)
+	fmt.Printf("%#v\n", result)
+	return result
+}
+
+func connectDatabase(dsn string) *gorm.DB {
+	fmt.Println("connect")
+	fmt.Print("\n\n")
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%#v\n", db)
+	err = db.AutoMigrate(&ToDoItem{})
+	if err != nil {
+		panic(err)
+	}
+	return db
+}
+
+func loadConfig() string {
 	fmt.Println("config")
 	fmt.Print("\n\n")
 	config := map[string]string{}
@@ -41,27 +84,5 @@ func main() {
 		panic(errors.New("config dsn not found"))
 	}
 	println(dsn)
-	fmt.Println("connect")
-	fmt.Print("\n\n")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%#v\n", db)
-	err = db.AutoMigrate(&ToDoItem{})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("create")
-	fmt.Print("\n\n")
-	item1 := &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}
-	result := db.Create(&item1)
-	fmt.Printf("%#v\n", item1)
-	fmt.Printf("%#v\n", result)
-	fmt.Println("find")
-	fmt.Print("\n\n")
-	items := []ToDoItem{}
-	result = db.Limit(50).Find(&items)
-	fmt.Printf("%#v\n", items)
-	fmt.Printf("%#v\n", result)
+	return dsn
 }
