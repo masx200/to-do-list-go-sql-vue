@@ -46,7 +46,10 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 
 	r.DELETE("/todoitem", func(c *gin.Context) {
 		qsid := c.Query("id")
-
+		if len(qsid) == 0 {
+			c.String(400, "expect id not found")
+			return
+		}
 		id, err := strconv.Atoi(qsid)
 
 		if err != nil {
