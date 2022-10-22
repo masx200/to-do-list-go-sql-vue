@@ -61,7 +61,7 @@ func main() {
 	fmt.Println("find")
 	fmt.Print("\n\n")
 	items := []ToDoItem{}
-	result = db.Find(&items)
+	result = db.Limit(50).Find(&items)
 	fmt.Printf("%#v\n", items)
 	fmt.Printf("%#v\n", result)
 }
