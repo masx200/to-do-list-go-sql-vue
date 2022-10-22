@@ -20,6 +20,7 @@ type ToDoItem struct {
 	Content string `json:"content" gorm:"not null"`
 
 	Finished bool `json:"finished"`
+	ID       uint `gorm:"primarykey" json:"id"`
 }
 
 func main() {
