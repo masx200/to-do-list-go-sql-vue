@@ -17,7 +17,7 @@ import (
 
 type ToDoItem struct {
 	gorm.Model
-	Content string `json:"content"`
+	Content string `json:"content" gorm:"not null"`
 
 	Finished bool `json:"finished"`
 }
