@@ -31,6 +31,14 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 			}
 			return
 		}
+
+	}, func(c *gin.Context) {
+		qsid := c.Query("id")
+
+		if len(qsid) != 0 {
+			return
+		}
+
 		qslimit := c.DefaultQuery("limit", "50")
 
 		limit, err := strconv.Atoi(qslimit)
