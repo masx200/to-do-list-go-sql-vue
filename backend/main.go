@@ -55,7 +55,7 @@ func main() {
 	fmt.Println("create")
 	fmt.Print("\n\n")
 	item1 := &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}
-	result := db.Create(item1)
+	result := db.Create(&item1)
 	fmt.Printf("%#v\n", item1)
 	fmt.Printf("%#v\n", result)
 	fmt.Println("find")
