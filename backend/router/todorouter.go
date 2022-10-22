@@ -25,7 +25,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 			var item = new(ToDoItem)
 			item, err = operations.GetItem(db, item, uint(id))
 			if err != nil {
-				c.String(500, err.Error())
+				c.String(404, err.Error())
 			} else {
 				c.JSON(200, item)
 			}
@@ -86,7 +86,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		var item = new(ToDoItem)
 		item, err = operations.GetItem(db, item, uint(id))
 		if err != nil {
-			c.String(500, err.Error())
+			c.String(404, err.Error())
 			return
 		}
 		err = operations.DeleteItem(db, &ToDoItem{}, uint(id))
@@ -123,7 +123,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		}
 		item, err = operations.GetItem(db, item, uint(id))
 		if err != nil {
-			c.String(500, err.Error())
+			c.String(404, err.Error())
 		} else {
 			c.JSON(200, item)
 		}
