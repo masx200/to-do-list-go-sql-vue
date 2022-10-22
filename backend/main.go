@@ -4,9 +4,9 @@ import (
 	// "fmt"
 	// "math"
 	"strconv"
-	"time"
+	// "time"
 
-	"math/rand"
+	// "math/rand"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/configs"
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
@@ -19,7 +19,7 @@ func main() {
 	var LoadConfig = configs.LoadConfig
 	type ToDoItem = todoitem.ToDoItem
 
-	rand.Seed(time.Now().Unix())
+	// rand.Seed(time.Now().Unix())
 	config := LoadConfig()
 	db := database.ConnectDatabase(config.Dsn, &ToDoItem{})
 	r := gin.Default()
