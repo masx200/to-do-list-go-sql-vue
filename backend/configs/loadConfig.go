@@ -7,8 +7,8 @@ import (
 )
 
 type Config struct {
-	Port int
-	Dsn  string
+	Port int    `json:"port"`
+	Dsn  string `json:"dsn"`
 }
 
 func LoadConfig() Config {

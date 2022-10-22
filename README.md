@@ -19,5 +19,3 @@ vue
 typescript
 
 element-plus
-
-protobuf

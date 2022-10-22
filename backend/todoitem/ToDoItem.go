@@ -6,7 +6,9 @@ import (
 
 type ToDoItem struct {
 	gorm.Model
-	Content string ` gorm:"not null"`
+	Content string `gorm:"not null" json:"content"`
 
-	Finished bool ` gorm:"not null"`
+	Finished bool `gorm:"not null" json:"finished"`
+
+	ID uint `gorm:"primarykey" json:"id"`
 }

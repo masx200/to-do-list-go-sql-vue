@@ -23,6 +23,15 @@ func main() {
 	config := LoadConfig()
 	db := database.ConnectDatabase(config.Dsn, &ToDoItem{})
 	r := gin.Default()
+	r.GET("/todoitem", func(c *gin.Context) {
+		tdi, d := operations.FindItems(db, []ToDoItem{}, 30)
+		if d.Error != nil {
+			c.String(500, d.Error.Error())
+		} else {
+			c.JSON(200, tdi)
+		}
+
+	})
 	r.Run(":" + strconv.Itoa(config.Port))
 	// fmt.Println("CreateItem", operations.CreateItem(db, &ToDoItem{Content: "hello world!" + strconv.FormatInt((rand.Int63n(math.MaxInt64)), 10), Finished: false}))
 	// fmt.Println("FindItems")
