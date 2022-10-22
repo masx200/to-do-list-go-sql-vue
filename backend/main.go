@@ -24,9 +24,19 @@ func main() {
 	db := database.ConnectDatabase(config.Dsn, &ToDoItem{})
 	r := gin.Default()
 	r.GET("/todoitem", func(c *gin.Context) {
-		tdi, d := operations.FindItems(db, []ToDoItem{}, 30)
-		if d.Error != nil {
-			c.String(500, d.Error.Error())
+		qslimit := c.DefaultQuery("limit", "30")
+		var err error
+		limit := 30
+
+		limit, err = strconv.Atoi(qslimit)
+
+		if err != nil {
+			c.String(400, err.Error())
+			return
+		}
+		tdi, err := operations.FindItems(db, []ToDoItem{}, limit)
+		if err != nil {
+			c.String(500, err.Error())
 		} else {
 			c.JSON(200, tdi)
 		}
