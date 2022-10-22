@@ -12,6 +12,25 @@ import (
 func TodoRoute(r *gin.Engine, db *gorm.DB) {
 	type ToDoItem = todoitem.ToDoItem
 	r.GET("/todoitem", func(c *gin.Context) {
+
+		qsid := c.Query("id")
+
+		if len(qsid) != 0 {
+			id, err := strconv.Atoi(qsid)
+
+			if err != nil {
+				c.String(400, err.Error())
+				return
+			}
+			var item = new(ToDoItem)
+			item, err = operations.GetItem(db, item, uint(id))
+			if err != nil {
+				c.String(500, err.Error())
+			} else {
+				c.JSON(200, item)
+			}
+			return
+		}
 		qslimit := c.DefaultQuery("limit", "50")
 
 		limit, err := strconv.Atoi(qslimit)
