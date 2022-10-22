@@ -9,9 +9,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func TodoRoute(r *gin.Engine, db *gorm.DB) {
+func TodoRoute(r *gin.Engine, db *gorm.DB,prefix string) {
 	type ToDoItem = todoitem.ToDoItem
-	r.GET("/todoitem", func(c *gin.Context) {
+	r.GET(prefix, func(c *gin.Context) {
 
 		qsid := c.Query("id")
 
@@ -58,7 +58,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		}
 		// return
 	})
-	r.POST("/todoitem", func(c *gin.Context) {
+	r.POST(prefix, func(c *gin.Context) {
 		var item ToDoItem
 		err := c.ShouldBindJSON(&item)
 		if err != nil {
@@ -74,7 +74,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		// return
 	})
 
-	r.DELETE("/todoitem", func(c *gin.Context) {
+	r.DELETE(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
 			c.String(400, "expect id but not found")
@@ -100,7 +100,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 		}
 		// return
 	})
-	r.PATCH("/todoitem", func(c *gin.Context) {
+	r.PUT(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
 			c.String(400, "expect id but not found")

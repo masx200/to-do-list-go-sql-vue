@@ -19,7 +19,7 @@ func main() {
 	db := database.ConnectDatabase(config.Dsn, &ToDoItem{})
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	TodoRoute(r, db)
+	TodoRoute(r, db,"/todoitem")
 	r.GET("/", func(c *gin.Context) {
 
 		c.String(200, "index")
