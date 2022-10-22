@@ -22,7 +22,7 @@ func main() {
 	TodoRoute(r, db)
 	r.GET("/", func(c *gin.Context) {
 
-		c.String(200, "home")
+		c.String(200, "index")
 	})
 	r.Run(":" + strconv.Itoa(config.Port))
 
