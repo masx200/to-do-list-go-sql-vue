@@ -20,7 +20,6 @@ type ToDoItem struct {
 	Content string ` gorm:"not null"`
 
 	Finished bool ` gorm:"not null"`
-	ID       uint `gorm:"primarykey"`
 }
 
 func main() {
@@ -36,8 +35,9 @@ func updateItem(db *gorm.DB, id uint, item1 *ToDoItem) *gorm.DB {
 	fmt.Println("update")
 	fmt.Print("\n\n")
 
-	item := &ToDoItem{ID: id}
-	result := db.Model(&item).Select("*").Updates(&item1)
+	item := &ToDoItem{}
+	item.ID = id
+	result := db.Model(&item).Select("*").Omit("id", "created_at", "deleted_at").Updates(&item1)
 	fmt.Printf("%#v\n", item1)
 	fmt.Printf("%#v\n", result)
 	return result
@@ -71,7 +71,7 @@ func connectDatabase(dsn string) *gorm.DB {
 		panic(err)
 	}
 	fmt.Printf("%#v\n", db)
-	db=db.Debug()
+	db = db.Debug()
 	err = db.AutoMigrate(&ToDoItem{})
 	if err != nil {
 		panic(err)
