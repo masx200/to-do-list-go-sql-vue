@@ -33,11 +33,11 @@ func FindItems[T any](db *gorm.DB, items []T, limit int) ([]T, error) {
 }
 
 func CreateItem[T any](db *gorm.DB, item *T) error {
-	fmt.Println("create")
-	fmt.Print("\n\n")
+	// fmt.Println("create")
+	// fmt.Print("\n\n")
 
 	result := db.Create(&item)
-	fmt.Printf("%#v\n", item)
-	fmt.Printf("%#v\n", result)
+	// fmt.Printf("%#v\n", item)
+	// fmt.Printf("%#v\n", result)
 	return result.Error
 }

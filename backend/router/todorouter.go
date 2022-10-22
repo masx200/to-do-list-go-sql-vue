@@ -13,9 +13,8 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 	type ToDoItem = todoitem.ToDoItem
 	r.GET("/todoitem", func(c *gin.Context) {
 		qslimit := c.DefaultQuery("limit", "50")
-		
 
-		limit, err:= strconv.Atoi(qslimit)
+		limit, err := strconv.Atoi(qslimit)
 
 		if err != nil {
 			c.String(400, err.Error())
@@ -26,6 +25,21 @@ func TodoRoute(r *gin.Engine, db *gorm.DB) {
 			c.String(500, err.Error())
 		} else {
 			c.JSON(200, tdi)
+		}
+
+	})
+	r.POST("/todoitem", func(c *gin.Context) {
+		var item ToDoItem
+		err := c.ShouldBindJSON(&item)
+		if err != nil {
+			c.String(400, err.Error())
+			return
+		}
+		err = operations.CreateItem(db, &item)
+		if err != nil {
+			c.String(500, err.Error())
+		} else {
+			c.JSON(200, item)
 		}
 
 	})
