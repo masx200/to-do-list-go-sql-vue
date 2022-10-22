@@ -17,9 +17,9 @@ import (
 
 type ToDoItem struct {
 	gorm.Model
-	Content string
+	Content string `json:"content"`
 
-	Finished bool
+	Finished bool `json:"finished"`
 }
 
 func main() {
