@@ -12,11 +12,10 @@ import (
 func TodoRoute(r *gin.Engine, db *gorm.DB) {
 	type ToDoItem = todoitem.ToDoItem
 	r.GET("/todoitem", func(c *gin.Context) {
-		qslimit := c.DefaultQuery("limit", "30")
-		var err error
-		limit := 30
+		qslimit := c.DefaultQuery("limit", "50")
+		
 
-		limit, err = strconv.Atoi(qslimit)
+		limit, err:= strconv.Atoi(qslimit)
 
 		if err != nil {
 			c.String(400, err.Error())
