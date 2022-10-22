@@ -10,6 +10,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type ToDoItem struct {
+	gorm.Model
+	Content string
+
+	Finished bool
+}
+
 func main() {
 	config := map[string]string{}
 	x, err := os.ReadFile("./config.json")
@@ -30,5 +37,5 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("%#v\n", db)
-
+	db.AutoMigrate(&ToDoItem{})
 }
