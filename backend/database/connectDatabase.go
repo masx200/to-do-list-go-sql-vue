@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 
 // import "fmt"
 
-func ConnectDatabase[T any](dsn string, model *T, TableName string) *gorm.DB {
+func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) *gorm.DB {
 	// fmt.Println("connect")
 	// fmt.Print("\n\n")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -14,10 +14,14 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string) *gorm.DB {
 	}
 	// fmt.Printf("%#v\n", db)
 	db = db.Table(TableName)
+	if debug {
+		db = db.Debug()
+	}
+
 	err = db.AutoMigrate(model)
 	if err != nil {
 		panic(err)
 	}
-	db = db.Debug()
+
 	return db
 }
