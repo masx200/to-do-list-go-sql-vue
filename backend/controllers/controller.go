@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 import "strconv"
 import "gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 
-func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string) {
+func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.GET(prefix, func(c *gin.Context) {
 
 		qsid := c.Query("id")
@@ -63,7 +63,7 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 		})
 }
 
-func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
+func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.POST(prefix, func(c *gin.Context) {
 		var item T
 		err := c.ShouldBindJSON(&item)
@@ -81,7 +81,7 @@ func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 	})
 }
 
-func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
+func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.DELETE(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
@@ -113,7 +113,7 @@ func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 	})
 }
 
-func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
+func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.PUT(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {

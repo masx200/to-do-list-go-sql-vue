@@ -23,7 +23,7 @@ func main() {
 	}
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	routers.TodoRoute[ToDoItem](r, db, "/todoitem")
+	routers.TodoRoute(r, db, "/todoitem", &ToDoItem{})
 	r.GET("/", func(c *gin.Context) {
 
 		c.String(200, "index")
