@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func TodoRoute(r *gin.Engine, db *gorm.DB,prefix string) {
+func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 	type ToDoItem = todoitem.ToDoItem
 	r.GET(prefix, func(c *gin.Context) {
 
