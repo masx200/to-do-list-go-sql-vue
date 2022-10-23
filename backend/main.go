@@ -16,7 +16,7 @@ func main() {
 	type ToDoItem = todoitem.ToDoItem
 
 	config := LoadConfig()
-	db := database.ConnectDatabase(config.Dsn, &ToDoItem{})
+	db := database.ConnectDatabase(config.Dsn, &ToDoItem{}, "to_do_items")
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.TodoRoute[ToDoItem](r, db, "/todoitem")
