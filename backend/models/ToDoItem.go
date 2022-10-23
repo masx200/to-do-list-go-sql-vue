@@ -22,9 +22,3 @@ type ToDoItem struct {
 	Author string `gorm:"not null;index" json:"author"`
 }
 
-// func (t *ToDoItem) MarshalJSON() ([]byte, error) {
-// 	return json.Marshal(map[string]any{
-// 		"id":       t.ID,
-// 		"finished": t.Finished,
-// 		"content":  t.Content})
-// }

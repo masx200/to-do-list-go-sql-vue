@@ -1,23 +1,28 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
-import "gorm.io/gorm"
-import "strconv"
-import "gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
+import (
+	"strconv"
 
-func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
-	r.GET(prefix, func(c *gin.Context) {
+	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
 
-		qsid := c.Query("id")
 
-		if len(qsid) != 0 {
-			c.Abort()
-			id, err := strconv.Atoi(qsid)
+func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+	r.POST(prefix, func(c *gin.Context) {
+		var item T
+		err := c.ShouldBindJSON(&item)
+		if err != nil {
+			c.String(400, err.Error())
+			return
+		}
 
-			if err != nil {
-				c.String(400, err.Error())
-				return
-			}
+		id, err := database.CreateItem(db, model, &item)
+		if err != nil {
+			c.String(500, err.Error())
+		} else {
+
 			var item = new(T)
 			res, err := database.GetItem(db, item, uint(id))
 			if err != nil {
@@ -26,66 +31,6 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				c.JSON(200, []map[string]interface{}{res})
 			}
 			return
-		} else {
-			c.Next()
-		}
-
-	},
-		func(c *gin.Context) {
-			qsid := c.Query("id")
-
-			if len(qsid) != 0 {
-				return
-			}
-			c.Abort()
-			qslimit := c.DefaultQuery("limit", "50")
-
-			limit, err := strconv.Atoi(qslimit)
-			if err != nil {
-				c.String(400, err.Error())
-				return
-			}
-			qspage := c.DefaultQuery("page", "0")
-
-			page, err := strconv.Atoi(qspage)
-
-			if err != nil {
-				c.String(400, err.Error())
-				return
-			}
-
-			var query T
-
-			err = c.ShouldBindQuery(&query)
-			if err != nil {
-				c.String(400, err.Error())
-				return
-			}
-			tdi, err := database.FindItems(db, limit, page, &query)
-			if err != nil {
-				c.String(500, err.Error())
-			} else {
-				c.JSON(200, tdi)
-			}
-			// return
-		})
-}
-
-func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
-	r.POST(prefix, func(c *gin.Context) {
-		var item = map[string]any{}
-		err := c.ShouldBindJSON(&item)
-		if err != nil {
-			c.String(400, err.Error())
-			return
-		}
-		delete(item, "id")
-		err = database.CreateItem(db, model, item)
-		if err != nil {
-			c.String(500, err.Error())
-		} else {
-
-			c.JSON(200, []map[string]any{item})
 
 		}
 		// return

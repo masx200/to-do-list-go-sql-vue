@@ -1,7 +1,9 @@
 package database
 
-import "gorm.io/driver/mysql"
-import "gorm.io/gorm"
+import (
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
 
 // import "fmt"
 

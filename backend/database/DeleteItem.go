@@ -22,13 +22,3 @@ func UpdateItem[T any](db *gorm.DB, item *T, id uint) error {
 
 	return result.Error
 }
-
-func CreateItem[T any](db *gorm.DB, model *T, item map[string]any) error {
-	// fmt.Println("create")
-	// fmt.Print("\n\n")
-	delete(item, "id")
-	result := db.Model(model).Create(&item)
-	// fmt.Printf("%#v\n", item)
-	// fmt.Printf("%#v\n", result)
-	return result.Error
-}
