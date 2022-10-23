@@ -11,6 +11,6 @@ CREATE TABLE if not exists `to_do_items`(
     `finished` tinyint(1) NOT NULL,
     `author` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX `idx_to_do_items_deleted_at`(`deleted_at` ASC) USING BTREE,
-    INDEX `idx_to_do_items_author`(`author` ASC) USING BTREE
+    INDEX `idx_to_do_items_finished`(`finished` ASC) USING BTREE,
+INDEX `idx_to_do_items_deleted_at`(`deleted_at` ASC) USING BTREE,INDEX `idx_to_do_items_author`(`author` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 20 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
