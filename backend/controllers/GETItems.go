@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	// "fmt"
 	"strconv"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
@@ -57,14 +58,15 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				return
 			}
 
-			var query =new(T)
+			var query T
 
 			err = c.ShouldBindQuery(&query)
 			if err != nil {
 				c.String(400, err.Error())
 				return
 			}
-			tdi, err := database.FindItems(db, limit, page, &query)
+			// fmt.Printf("%#v\n", query)
+			tdi, err := database.FindItems(db, limit, page, model, &query)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {

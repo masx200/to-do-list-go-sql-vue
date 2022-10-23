@@ -15,10 +15,10 @@ type ToDoItem struct {
 	DeletedAt DeletedAt `gorm:"index" json:"deleted_at"`
 	Content   string    `gorm:"not null" json:"content"`
 
-	Finished bool `gorm:"not null" json:"finished"`
+	Finished bool `gorm:"not null" json:"finished" `
 
 	ID uint `gorm:"primarykey" json:"id"`
 
-	Author string `gorm:"not null;index" json:"author"`
+	Author string `gorm:"not null;index" json:"author" form:"author"`
 }
 
