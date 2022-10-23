@@ -13,11 +13,11 @@ type ToDoItem struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	DeletedAt DeletedAt `gorm:"index" json:"deleted_at"`
-	Content   string    `gorm:"not null" json:"content"`
+	Content   string    `gorm:"not null" json:"content"  form:"content"`
 
-	Finished bool `gorm:"not null" json:"finished" `
+	Finished bool `gorm:"not null" json:"finished" form:"finished" `
 
-	ID uint `gorm:"primarykey" json:"id"`
+	ID uint `gorm:"primarykey" json:"id" form:"id"`
 
 	Author string `gorm:"not null;index" json:"author" form:"author"`
 }
