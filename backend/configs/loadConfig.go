@@ -7,9 +7,9 @@ import (
 )
 
 type Config struct {
-	Port int    `json:"port"`
-	Dsn  string `json:"dsn"`
-	Debug  bool `json:"debug"`
+	Port  int    `json:"port"`
+	Dsn   string `json:"dsn"`
+	Debug bool   `json:"debug"`
 }
 
 func LoadConfig() Config {

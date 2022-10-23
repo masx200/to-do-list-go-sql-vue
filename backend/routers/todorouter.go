@@ -3,7 +3,7 @@ package routers
 import (
 	"strconv"
 
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/controllers"
+	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 				return
 			}
 			var item = new(T)
-			item, err = controllers.GetItem(db, item, uint(id))
+			item, err = database.GetItem(db, item, uint(id))
 			if err != nil {
 				c.String(404, err.Error())
 			} else {
@@ -57,7 +57,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		tdi, err := controllers.FindItems(db, []T{}, limit, page)
+		tdi, err := database.FindItems(db, []T{}, limit, page)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -72,7 +72,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		err = controllers.CreateItem(db, &item)
+		err = database.CreateItem(db, &item)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -81,6 +81,11 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 		// return
 	})
 
+	DELETEItem[T](r, db, prefix)
+	PUTItem[T](r, db, prefix)
+}
+
+func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 	r.DELETE(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
@@ -94,7 +99,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			return
 		}
 		var item = new(T)
-		item, err = controllers.GetItem(db, item, uint(id))
+		item, err = database.GetItem(db, item, uint(id))
 		/* 保持接口的幂等性 */
 		if err != nil {
 			c.JSON(200, gin.H{
@@ -102,7 +107,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			})
 			return
 		}
-		err = controllers.DeleteItem(db, new(T), uint(id))
+		err = database.DeleteItem(db, new(T), uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -110,6 +115,9 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 		}
 		// return
 	})
+}
+
+func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 	r.PUT(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
@@ -129,12 +137,12 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			return
 		}
 
-		err = controllers.UpdateItem(db, &item, uint(id))
+		err = database.UpdateItem(db, &item, uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 			return
 		}
-		item, err = controllers.GetItem(db, item, uint(id))
+		item, err = database.GetItem(db, item, uint(id))
 		if err != nil {
 			c.String(404, err.Error())
 		} else {

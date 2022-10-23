@@ -5,8 +5,8 @@ import (
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/configs"
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/routers"
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/models"
+	"gitee.com/masx200/to-do-list-go-sql-vue/backend/routers"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
