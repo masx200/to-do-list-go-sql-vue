@@ -10,7 +10,7 @@ func GetItem[T any](db *gorm.DB, model *T, id uint) (map[string]interface{}, err
 	// fmt.Println("update")
 	// fmt.Print("\n\n")
 	res := map[string]interface{}{}
-	result := db.Model(&model).First(res, id)
+	result := db.Model(&model).Omit("deleted_at").First(res, id)
 	// fmt.Printf("%#v\n", item)
 	// fmt.Printf("%#v\n", result)
 
