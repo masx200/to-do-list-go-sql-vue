@@ -23,7 +23,7 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			if err != nil {
 				c.String(404, err.Error())
 			} else {
-				c.JSON(200, item)
+				c.JSON(200, []*T{item})
 			}
 			return
 		} else {
