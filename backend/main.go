@@ -14,12 +14,12 @@ import (
 func main() {
 	var LoadConfig = configs.LoadConfig
 	type ToDoItem = todoitem.ToDoItem
-	var TodoRoute = router.TodoRoute
+
 	config := LoadConfig()
 	db := database.ConnectDatabase(config.Dsn, &ToDoItem{})
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	TodoRoute(r, db, "/todoitem")
+	router.TodoRoute[ToDoItem](r, db, "/todoitem")
 	r.GET("/", func(c *gin.Context) {
 
 		c.String(200, "index")

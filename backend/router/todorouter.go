@@ -4,13 +4,13 @@ import (
 	"strconv"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/operations"
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/todoitem"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
-	type ToDoItem = todoitem.ToDoItem
+func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
+
 	r.GET(prefix, func(c *gin.Context) {
 
 		qsid := c.Query("id")
@@ -23,7 +23,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 				c.String(400, err.Error())
 				return
 			}
-			var item = new(ToDoItem)
+			var item = new(T)
 			item, err = operations.GetItem(db, item, uint(id))
 			if err != nil {
 				c.String(404, err.Error())
@@ -57,7 +57,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		tdi, err := operations.FindItems(db, []ToDoItem{}, limit,page)
+		tdi, err := operations.FindItems(db, []T{}, limit, page)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -66,7 +66,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 		// return
 	})
 	r.POST(prefix, func(c *gin.Context) {
-		var item ToDoItem
+		var item T
 		err := c.ShouldBindJSON(&item)
 		if err != nil {
 			c.String(400, err.Error())
@@ -93,13 +93,13 @@ func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		var item = new(ToDoItem)
+		var item = new(T)
 		item, err = operations.GetItem(db, item, uint(id))
 		if err != nil {
 			c.String(404, err.Error())
 			return
 		}
-		err = operations.DeleteItem(db, &ToDoItem{}, uint(id))
+		err = operations.DeleteItem(db, new(T), uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -119,7 +119,7 @@ func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		var item = new(ToDoItem)
+		var item = new(T)
 		err = c.ShouldBindJSON(&item)
 		if err != nil {
 			c.String(400, err.Error())
