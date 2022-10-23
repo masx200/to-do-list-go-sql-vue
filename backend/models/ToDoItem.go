@@ -13,6 +13,8 @@ type ToDoItem struct {
 	Finished bool `gorm:"not null" json:"finished"`
 
 	ID uint `gorm:"primarykey" json:"id"`
+
+	Author string `gorm:"not null" json:"author"`
 }
 
 func (t *ToDoItem) MarshalJSON() ([]byte, error) {
