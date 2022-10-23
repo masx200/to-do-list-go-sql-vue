@@ -3,12 +3,17 @@ package models
 import (
 	// "encoding/json"
 
+	"time"
+
 	"gorm.io/gorm"
 )
 
+type DeletedAt = gorm.DeletedAt
 type ToDoItem struct {
-	gorm.Model
-	Content string `gorm:"not null" json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	DeletedAt DeletedAt `gorm:"index" json:"deleted_at"`
+	Content   string    `gorm:"not null" json:"content"`
 
 	Finished bool `gorm:"not null" json:"finished"`
 
