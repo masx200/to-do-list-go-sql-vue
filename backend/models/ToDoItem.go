@@ -14,7 +14,7 @@ type ToDoItem struct {
 
 	ID uint `gorm:"primarykey" json:"id"`
 
-	Author string `gorm:"not null" json:"author"`
+	Author string `gorm:"not null,index" json:"author"`
 }
 
 func (t *ToDoItem) MarshalJSON() ([]byte, error) {
