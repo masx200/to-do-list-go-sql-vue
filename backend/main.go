@@ -24,10 +24,10 @@ func main() {
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	routers.TodoRoute(r, db, "/todoitem", &ToDoItem{})
-	r.GET("/", func(c *gin.Context) {
+	//r.GET("/", func(c *gin.Context) {
 
-		c.String(200, "index")
-	})
+	//	c.String(200, "index")
+	//})
 	r.Run(":" + strconv.Itoa(config.Port))
 
 }
