@@ -73,18 +73,19 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 
 func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.POST(prefix, func(c *gin.Context) {
-		var item T
+		var item = map[string]any{}
 		err := c.ShouldBindJSON(&item)
 		if err != nil {
 			c.String(400, err.Error())
 			return
 		}
-		err = database.CreateItem(db, &item)
+		delete(item, "id")
+		err = database.CreateItem(db, model, item)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
 
-			c.JSON(200, []T{item})
+			c.JSON(200, []map[string]any{item})
 
 		}
 		// return
