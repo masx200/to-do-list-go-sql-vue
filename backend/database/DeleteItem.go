@@ -9,7 +9,7 @@ import (
 func DeleteItem[T any](db *gorm.DB, model *T, id uint) error {
 	// fmt.Println("delete")
 	// fmt.Print("\n\n")
-	return db.Delete(model, id).Error
+	return db.Model(&model).Delete(model, id).Error
 }
 
 func UpdateItem[T any](db *gorm.DB, item *T, id uint) error {
@@ -23,21 +23,11 @@ func UpdateItem[T any](db *gorm.DB, item *T, id uint) error {
 	return result.Error
 }
 
-func FindItems[T any](db *gorm.DB, items []T, limit int, page int, query *T) ([]T, error) {
-	// fmt.Println("find")
-	// fmt.Print("\n\n")
-
-	result := db.Where(query).Limit(limit).Offset(page * limit).Find(&items)
-	// fmt.Printf("%#v\n", items)
-	// fmt.Printf("%#v\n", result)
-	return items, result.Error
-}
-
 func CreateItem[T any](db *gorm.DB, item *T) error {
 	// fmt.Println("create")
 	// fmt.Print("\n\n")
 
-	result := db.Create(&item)
+	result := db.Model(item).Create(&item)
 	// fmt.Printf("%#v\n", item)
 	// fmt.Printf("%#v\n", result)
 	return result.Error

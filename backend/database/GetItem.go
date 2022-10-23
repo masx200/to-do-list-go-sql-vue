@@ -6,13 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetItem[T any](db *gorm.DB, item *T, id uint) (*T, error) {
+func GetItem[T any](db *gorm.DB, model *T, id uint) (map[string]interface{}, error) {
 	// fmt.Println("update")
 	// fmt.Print("\n\n")
-
-	result := db.First(&item, id)
+	res := map[string]interface{}{}
+	result := db.Model(&model).First(res, id)
 	// fmt.Printf("%#v\n", item)
 	// fmt.Printf("%#v\n", result)
 
-	return item, result.Error
+	return res, result.Error
 }

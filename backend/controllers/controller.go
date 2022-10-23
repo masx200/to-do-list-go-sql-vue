@@ -19,11 +19,11 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				return
 			}
 			var item = new(T)
-			item, err = database.GetItem(db, item, uint(id))
+			res, err := database.GetItem(db, item, uint(id))
 			if err != nil {
-				c.JSON(200, []*T{})
+				c.JSON(200, []map[string]interface{}{})
 			} else {
-				c.JSON(200, []*T{item})
+				c.JSON(200, []map[string]interface{}{res})
 			}
 			return
 		} else {
@@ -61,7 +61,7 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				c.String(400, err.Error())
 				return
 			}
-			tdi, err := database.FindItems(db, []T{}, limit, page, &query)
+			tdi, err := database.FindItems(db, limit, page, &query)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
@@ -83,7 +83,9 @@ func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
+
 			c.JSON(200, []T{item})
+
 		}
 		// return
 	})
@@ -103,7 +105,7 @@ func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			return
 		}
 		var item = new(T)
-		item, err = database.GetItem(db, item, uint(id))
+		res, err := database.GetItem(db, item, uint(id))
 		/* 保持接口的幂等性 */
 		if err != nil {
 			c.JSON(200, []gin.H{{
@@ -115,7 +117,7 @@ func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
-			c.JSON(200, []*T{item})
+			c.JSON(200, []map[string]interface{}{res})
 		}
 		// return
 	})
@@ -146,11 +148,11 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			c.String(500, err.Error())
 			return
 		}
-		item, err = database.GetItem(db, item, uint(id))
+		res, err := database.GetItem(db, item, uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
-			c.JSON(200, []*T{item})
+			c.JSON(200, []map[string]any{res})
 		}
 		// return
 	})
