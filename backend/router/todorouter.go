@@ -95,8 +95,11 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 		}
 		var item = new(T)
 		item, err = operations.GetItem(db, item, uint(id))
+		/* 保持接口的幂等性 */
 		if err != nil {
-			c.String(404, err.Error())
+			c.JSON(200, gin.H{
+				"id": id,
+			})
 			return
 		}
 		err = operations.DeleteItem(db, new(T), uint(id))
