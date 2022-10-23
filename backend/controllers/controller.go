@@ -75,7 +75,7 @@ func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
-			c.JSON(200, item)
+			c.JSON(200, []T{item})
 		}
 		// return
 	})
@@ -98,16 +98,16 @@ func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		item, err = database.GetItem(db, item, uint(id))
 		/* 保持接口的幂等性 */
 		if err != nil {
-			c.JSON(200, gin.H{
+			c.JSON(200, []gin.H{{
 				"id": id,
-			})
+			}})
 			return
 		}
 		err = database.DeleteItem(db, new(T), uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
-			c.JSON(200, item)
+			c.JSON(200, []*T{item})
 		}
 		// return
 	})
@@ -142,7 +142,7 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		if err != nil {
 			c.String(404, err.Error())
 		} else {
-			c.JSON(200, item)
+			c.JSON(200, []*T{item})
 		}
 		// return
 	})
