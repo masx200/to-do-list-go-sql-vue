@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
-	r.GET(prefix, func(c *gin.Context) {
+func GETHEADItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+	handlers := []gin.HandlerFunc{func(c *gin.Context) {
 
 		qsid := c.Query("id")
 
@@ -73,5 +73,7 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				c.JSON(200, tdi)
 			}
 			// return
-		})
+		}}
+	r.GET(prefix, handlers...)
+	r.HEAD(prefix, handlers...)
 }

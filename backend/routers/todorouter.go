@@ -9,7 +9,7 @@ import (
 
 func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 
-	controllers.GETItems(r, db, prefix, model)
+	controllers.GETHEADItems(r, db, prefix, model)
 	controllers.POSTItem(r, db, prefix, model)
 
 	controllers.DELETEItem(r, db, prefix, model)
