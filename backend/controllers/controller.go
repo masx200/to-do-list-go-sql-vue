@@ -53,7 +53,15 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				c.String(400, err.Error())
 				return
 			}
-			tdi, err := database.FindItems(db, []T{}, limit, page)
+
+			var query T
+
+			err = c.ShouldBindQuery(&query)
+			if err != nil {
+				c.String(400, err.Error())
+				return
+			}
+			tdi, err := database.FindItems(db, []T{}, limit, page, &query)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
