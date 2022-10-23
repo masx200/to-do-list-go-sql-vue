@@ -13,7 +13,7 @@ func CreateItem[T any](db *gorm.DB, model *T, item *T) (uint, error) {
 	// fmt.Println("create")
 	// fmt.Print("\n\n")
 	var id uint
-	result := db.Model(model).Select("*").Omit("id", "created_at", "deleted_at").Create(item)
+	result := db.Model(model).Select("*").Omit("id", "deleted_at").Create(item)
 	// fmt.Printf("%#v\n", item)
 	// fmt.Printf("%#v\n", result)
 	id = JSONGetID(item)
