@@ -16,7 +16,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 		qsid := c.Query("id")
 
 		if len(qsid) != 0 {
-			defer c.Abort()
+			c.Abort()
 			id, err := strconv.Atoi(qsid)
 
 			if err != nil {
