@@ -45,12 +45,19 @@ func TodoRoute(r *gin.Engine, db *gorm.DB, prefix string) {
 		qslimit := c.DefaultQuery("limit", "50")
 
 		limit, err := strconv.Atoi(qslimit)
+		if err != nil {
+			c.String(400, err.Error())
+			return
+		}
+		qspage := c.DefaultQuery("page", "0")
+
+		page, err := strconv.Atoi(qspage)
 
 		if err != nil {
 			c.String(400, err.Error())
 			return
 		}
-		tdi, err := operations.FindItems(db, []ToDoItem{}, limit)
+		tdi, err := operations.FindItems(db, []ToDoItem{}, limit,page)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {

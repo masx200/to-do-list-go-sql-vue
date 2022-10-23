@@ -1,6 +1,8 @@
 package todoitem
 
 import (
+	"encoding/json"
+
 	"gorm.io/gorm"
 )
 
@@ -11,4 +13,11 @@ type ToDoItem struct {
 	Finished bool `gorm:"not null" json:"finished"`
 
 	ID uint `gorm:"primarykey" json:"id"`
+}
+
+func (t *ToDoItem) MarshalJSON() ([]byte, error) {
+	return json.Marshal(map[string]any{
+		"id":       t.ID,
+		"finished": t.Finished,
+		"content":  t.Content})
 }

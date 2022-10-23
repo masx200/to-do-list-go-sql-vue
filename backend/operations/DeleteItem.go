@@ -23,11 +23,11 @@ func UpdateItem[T any](db *gorm.DB, item *T, id uint) error {
 	return result.Error
 }
 
-func FindItems[T any](db *gorm.DB, items []T, limit int) ([]T, error) {
+func FindItems[T any](db *gorm.DB, items []T, limit int, page int) ([]T, error) {
 	// fmt.Println("find")
 	// fmt.Print("\n\n")
 
-	result := db.Limit(limit).Find(&items)
+	result := db.Limit(limit).Offset(page * limit).Find(&items)
 	// fmt.Printf("%#v\n", items)
 	// fmt.Printf("%#v\n", result)
 	return items, result.Error
