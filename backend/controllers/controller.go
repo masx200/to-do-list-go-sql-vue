@@ -21,7 +21,7 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			var item = new(T)
 			item, err = database.GetItem(db, item, uint(id))
 			if err != nil {
-				c.String(404, err.Error())
+				c.JSON(200, []*T{})
 			} else {
 				c.JSON(200, []*T{item})
 			}
@@ -140,7 +140,7 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		}
 		item, err = database.GetItem(db, item, uint(id))
 		if err != nil {
-			c.String(404, err.Error())
+			c.String(500, err.Error())
 		} else {
 			c.JSON(200, []*T{item})
 		}
