@@ -1,4 +1,4 @@
-package todoitem
+package models
 
 import (
 	"encoding/json"

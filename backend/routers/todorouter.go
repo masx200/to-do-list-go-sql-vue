@@ -1,9 +1,9 @@
-package router
+package routers
 
 import (
 	"strconv"
 
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/operations"
+	"gitee.com/masx200/to-do-list-go-sql-vue/backend/controllers"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 				return
 			}
 			var item = new(T)
-			item, err = operations.GetItem(db, item, uint(id))
+			item, err = controllers.GetItem(db, item, uint(id))
 			if err != nil {
 				c.String(404, err.Error())
 			} else {
@@ -57,7 +57,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		tdi, err := operations.FindItems(db, []T{}, limit, page)
+		tdi, err := controllers.FindItems(db, []T{}, limit, page)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -72,7 +72,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			c.String(400, err.Error())
 			return
 		}
-		err = operations.CreateItem(db, &item)
+		err = controllers.CreateItem(db, &item)
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -94,7 +94,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			return
 		}
 		var item = new(T)
-		item, err = operations.GetItem(db, item, uint(id))
+		item, err = controllers.GetItem(db, item, uint(id))
 		/* 保持接口的幂等性 */
 		if err != nil {
 			c.JSON(200, gin.H{
@@ -102,7 +102,7 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			})
 			return
 		}
-		err = operations.DeleteItem(db, new(T), uint(id))
+		err = controllers.DeleteItem(db, new(T), uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {
@@ -129,12 +129,12 @@ func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string) {
 			return
 		}
 
-		err = operations.UpdateItem(db, &item, uint(id))
+		err = controllers.UpdateItem(db, &item, uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 			return
 		}
-		item, err = operations.GetItem(db, item, uint(id))
+		item, err = controllers.GetItem(db, item, uint(id))
 		if err != nil {
 			c.String(404, err.Error())
 		} else {
