@@ -24,6 +24,6 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) 
 	if err != nil {
 		panic(err)
 	}
-
+	db = db.Model(model)
 	return db
 }
