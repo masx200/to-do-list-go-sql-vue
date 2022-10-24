@@ -20,13 +20,10 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 			return
 		}
 
-		for _, input := range inputs {
-			delete(input, "id")
-		}
 		var ch = make(chan TWO[map[string]any, error])
 
 		for _, input := range inputs {
-
+			delete(input, "id")
 			go func(input map[string]any, ch chan TWO[map[string]any, error]) {
 
 				var item = database.MapToStruct[T](input)
