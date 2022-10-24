@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"context"
+
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -13,6 +15,8 @@ type TWO[T any, Y any] struct {
 
 func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
 	r.POST(prefix, func(c *gin.Context) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
 		var inputs []map[string]any
 		err := c.ShouldBindJSON(&inputs)
 		if err != nil {
@@ -22,7 +26,16 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 
 		var ch = make(chan TWO[map[string]any, error])
 		var output = func(res map[string]any, err error) {
-			ch <- TWO[map[string]any, error]{res, err}
+			select {
+			case <-ctx.Done():
+				{
+					return
+				}
+			case ch <- TWO[map[string]any, error]{res, err}:
+				{
+					return
+				}
+			}
 		}
 		for _, input := range inputs {
 			delete(input, "id")

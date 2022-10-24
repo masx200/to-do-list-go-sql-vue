@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"context"
+
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -8,7 +10,8 @@ import (
 
 func PUTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
 	r.PUT(prefix, func(c *gin.Context) {
-
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
 		var inputs []map[string]any
 		err := c.ShouldBindJSON(&inputs)
 		if err != nil {
@@ -17,7 +20,16 @@ func PUTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mode
 		}
 		var ch = make(chan TWO[map[string]any, error])
 		var output = func(res map[string]any, err error) {
-			ch <- TWO[map[string]any, error]{res, err}
+			select {
+			case <-ctx.Done():
+				{
+					return
+				}
+			case ch <- TWO[map[string]any, error]{res, err}:
+				{
+					return
+				}
+			}
 		}
 		for _, input := range inputs {
 			qsid, o := input["id"]
