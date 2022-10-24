@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
 	r.POST(prefix, func(c *gin.Context) {
 		var input map[string]any
 		err := c.ShouldBindJSON(&input)
@@ -29,13 +29,13 @@ func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			c.String(400, err.Error())
 			return
 		}
-		id, err := database.CreateItem(db, model, &item)
+		id, err := database.CreateItem(createDB, model, &item)
 		if err != nil {
 			c.String(500, err.Error())
 			return
 		} else {
 
-			res, err := database.GetItem(db, model, uint(id))
+			res, err := database.GetItem(createDB, model, uint(id))
 			if err != nil {
 				c.JSON(200, []map[string]interface{}{})
 			} else {

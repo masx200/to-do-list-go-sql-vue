@@ -4,8 +4,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func FindItems[T any](db *gorm.DB, limit int, page int, model *T, query *T, order string, direction string) ([]map[string]any, error) {
-
+func FindItems[T any](createDB func() *gorm.DB, limit int, page int, model *T, query *T, order string, direction string) ([]map[string]any, error) {
+	db := createDB()
 	if direction == "desc" {
 		db = db.Order(order + " " + "DESC")
 	} else {

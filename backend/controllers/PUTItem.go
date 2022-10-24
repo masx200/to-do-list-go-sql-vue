@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func PUTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
 	r.PUT(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
@@ -28,12 +28,12 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			return
 		}
 
-		err = database.UpdateItem(db, &item, uint(id))
+		err = database.UpdateItem(createDB, &item, uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 			return
 		}
-		res, err := database.GetItem(db, item, uint(id))
+		res, err := database.GetItem(createDB, item, uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {

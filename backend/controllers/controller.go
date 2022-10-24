@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
 	r.DELETE(prefix, func(c *gin.Context) {
 		qsid := c.Query("id")
 		if len(qsid) == 0 {
@@ -22,7 +22,7 @@ func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			return
 		}
 		var item = new(T)
-		res, err := database.GetItem(db, item, uint(id))
+		res, err := database.GetItem(createDB, item, uint(id))
 		/* 保持接口的幂等性 */
 		if err != nil {
 			c.JSON(200, []gin.H{{
@@ -30,7 +30,7 @@ func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			}})
 			return
 		}
-		err = database.DeleteItem(db, new(T), uint(id))
+		err = database.DeleteItem(createDB, new(T), uint(id))
 		if err != nil {
 			c.String(500, err.Error())
 		} else {

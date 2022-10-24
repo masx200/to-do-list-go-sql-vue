@@ -1,13 +1,11 @@
 package database
 
 import (
-	// "fmt"
-
 	"gorm.io/gorm"
 )
 
-func DeleteItem[T any](db *gorm.DB, model *T, id uint) error {
-	// fmt.Println("delete")
-	// fmt.Print("\n\n")
+func DeleteItem[T any](createDB func() *gorm.DB, model *T, id uint) error {
+	db := createDB()
+
 	return db.Model(&model).Delete(model, id).Error
 }
