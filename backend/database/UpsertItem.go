@@ -12,7 +12,8 @@ func UpsertItem[T any](createDB func() *gorm.DB, model *T, item map[string]any, 
 	for k, v := range item {
 		empty[k] = v
 	}
-	result := db.Model(&model).Select("*").Omit("created_at").Clauses(clause.OnConflict{
+	delete(empty, "updated_at")
+	result := db.Model(&model).Select("*").Omit("created_at", " updated_at").Clauses(clause.OnConflict{
 		UpdateAll: true,
 	}).Create(&empty).Where("id = ?", id).Unscoped().Update("deleted_at", nil)
 
