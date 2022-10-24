@@ -77,7 +77,10 @@ func GETItems[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 			values := c.Request.URL.Query()
 			var query = map[string]any{}
 			for k := range values {
-				query[k] = qm[k]
+				if v, o := qm[k]; o {
+					query[k] = v
+				}
+
 			}
 			delete(query, "id")
 			tdi, err := database.FindItems(createDB, limit, page, model, query, order, direction)
