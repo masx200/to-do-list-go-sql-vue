@@ -14,4 +14,5 @@ func TodoRoute[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mo
 
 	controllers.DELETEItem(r, createDB, prefix, model)
 	controllers.PUTItem(r, createDB, prefix, model)
+	controllers.PATCHItem(r, createDB, prefix, model)
 }
