@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	// "fmt"
 	"strconv"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
+	"gitee.com/masx200/to-do-list-go-sql-vue/backend/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -42,17 +42,8 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				return
 			}
 			c.Abort()
-			qslimit := c.DefaultQuery("limit", "50")
-
-			limit, err := strconv.Atoi(qslimit)
-			if err != nil {
-				c.String(400, err.Error())
-				return
-			}
-			qspage := c.DefaultQuery("page", "0")
-
-			page, err := strconv.Atoi(qspage)
-
+			var parameters models.QueryParameters
+			err := c.ShouldBindQuery(&parameters)
 			if err != nil {
 				c.String(400, err.Error())
 				return
@@ -65,13 +56,21 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				c.String(400, err.Error())
 				return
 			}
-			// fmt.Printf("%#v\n", query)
+			var limit = 100
+			if parameters.Limit > 0 {
+				limit = parameters.Limit
+			}
+			var page = 0
+			if parameters.Page > 0 {
+				page = parameters.Page
+			}
+
 			tdi, err := database.FindItems(db, limit, page, model, &query)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
 				c.JSON(200, tdi)
 			}
-			// return
+
 		})
 }
