@@ -12,10 +12,10 @@ type DeletedAt = gorm.DeletedAt
 type ToDoItem struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt DeletedAt `gorm:"index" json:"-"`
+	DeletedAt DeletedAt `gorm:"index" json:"-"  form:"-"`
 	Content   string    `gorm:"not null" json:"content"  form:"content"`
 
-	Finished bool `gorm:"not null" json:"finished" form:"finished" `
+	Finished bool `gorm:"not null;index" json:"finished" form:"finished" `
 
 	ID uint `gorm:"primarykey" json:"id" form:"id"`
 
