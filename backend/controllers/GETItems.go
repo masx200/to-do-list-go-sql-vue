@@ -64,8 +64,16 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			if parameters.Page > 0 {
 				page = parameters.Page
 			}
+			var order = "id"
+			if len(parameters.Order) > 0 {
+				order = parameters.Order
+			}
+			var direction = "asc"
+			if len(parameters.Direction) > 0 {
+				direction = parameters.Direction
+			}
 
-			tdi, err := database.FindItems(db, limit, page, model, &query)
+			tdi, err := database.FindItems(db, limit, page, model, &query, order, direction)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
