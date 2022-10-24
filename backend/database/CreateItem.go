@@ -1,8 +1,6 @@
 package database
 
 import (
-	"encoding/json"
-
 	"gorm.io/gorm"
 )
 
@@ -15,19 +13,11 @@ func CreateItem[T any](createDB func() *gorm.DB, model *T, item *T) (uint, error
 	id = JSONGetID(item)
 	return id, result.Error
 }
-func JSONGetID(obj any) uint {
-	str, err := json.Marshal(obj)
+func JSONGetID[T any](obj *T) uint {
 
 	var id uint = 0
+	m := StructToMap(obj)
 
-	if err != nil {
-		panic(err)
-	}
-	var m = map[string]any{}
-	err = json.Unmarshal(str, &m)
-	if err != nil {
-		panic(err)
-	}
 	id6, ok := (m["id"]).(float64)
 	if !ok {
 		return id

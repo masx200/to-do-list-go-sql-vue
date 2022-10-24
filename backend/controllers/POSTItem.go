@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
-
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -17,19 +15,9 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 			return
 		}
 		delete(input, "id")
-		str, err := json.Marshal(input)
-		if err != nil {
-			c.String(400, err.Error())
-			return
-		}
-		var item T
 
-		err = json.Unmarshal(str, &item)
-		if err != nil {
-			c.String(400, err.Error())
-			return
-		}
-		id, err := database.CreateItem(createDB, model, &item)
+		var item = database.MapToStruct[T](input)
+		id, err := database.CreateItem(createDB, model, item)
 		if err != nil {
 			c.String(500, err.Error())
 			return

@@ -2,7 +2,7 @@ package configs
 
 import (
 	"encoding/json"
-	// "fmt"
+	
 	"os"
 )
 
@@ -13,8 +13,8 @@ type Config struct {
 }
 
 func LoadConfig() Config {
-	// fmt.Println("config")
-	// fmt.Print("\n\n")
+	
+	
 	config := Config{}
 	text, err := os.ReadFile("./config.json")
 	if err != nil {
@@ -24,6 +24,6 @@ func LoadConfig() Config {
 	if err != nil {
 		panic(err)
 	}
-	// fmt.Printf("config\n%#v\n", config)
+	
 	return config
 }

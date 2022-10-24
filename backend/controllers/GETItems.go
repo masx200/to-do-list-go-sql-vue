@@ -49,9 +49,9 @@ func GETItems[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 				return
 			}
 
-			var query T
+			var item T
 
-			err = c.ShouldBindQuery(&query)
+			err = c.ShouldBindQuery(&item)
 			if err != nil {
 				c.String(400, err.Error())
 				return
@@ -72,8 +72,15 @@ func GETItems[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 			if len(parameters.Direction) > 0 {
 				direction = parameters.Direction
 			}
+			var qm = database.StructToMap(&item)
 
-			tdi, err := database.FindItems(createDB, limit, page, model, &query, order, direction)
+			values := c.Request.URL.Query()
+			var query = map[string]any{}
+			for k := range values {
+				query[k] = qm[k]
+			}
+			delete(query, "id")
+			tdi, err := database.FindItems(createDB, limit, page, model, query, order, direction)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
