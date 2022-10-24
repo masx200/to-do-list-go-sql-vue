@@ -11,7 +11,7 @@ func UpsertItem[T any](createDB func() *gorm.DB, model *T, item map[string]any, 
 
 	result := db.Model(&model).Select("*").Omit("created_at", "deleted_at").Clauses(clause.OnConflict{
 		UpdateAll: true,
-	}).Create(&item)
+	}).Create(&item).Update("deleted_at", nil)
 
 	return result.Error
 }
