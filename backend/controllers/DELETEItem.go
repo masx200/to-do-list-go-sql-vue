@@ -47,7 +47,7 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 
 			go func(id float64) {
 
-				var item = new(T)
+				var item = model
 				res, err := database.GetItem(createDB, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
@@ -58,7 +58,7 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 
 					return
 				}
-				err = database.DeleteItem(createDB, new(T), uint(id))
+				err = database.DeleteItem(createDB, model, uint(id))
 				if err != nil {
 					output(nil, err)
 

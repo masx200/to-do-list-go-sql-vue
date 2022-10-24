@@ -45,14 +45,12 @@ func PATCHItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mo
 			}
 			var item = input
 			go func(id float64, item map[string]any) {
-
-				err := database.UpdateItem(createDB, model, item, uint(id))
+				/* patch 不需要删除直接修改 */
+				err := database.UpsertItem(createDB, model, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
 
-					output(gin.H{
-						"id": id,
-					}, nil)
+					output(nil, err)
 
 					return
 				}
