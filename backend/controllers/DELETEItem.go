@@ -16,6 +16,9 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 			return
 		}
 		var ch = make(chan TWO[map[string]any, error])
+		var output = func(res map[string]any, err error) {
+			ch <- TWO[map[string]any, error]{res, err}
+		}
 		for _, input := range inputs {
 			qsid, o := input["id"]
 			if !o {
@@ -29,30 +32,32 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 				return
 			}
 
-			go func(id float64, ch chan TWO[map[string]any, error]) {
+			go func(id float64) {
 
 				var item = new(T)
 				res, err := database.GetItem(createDB, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
 
-					ch <- TWO[map[string]any, error]{gin.H{
+					output(gin.H{
 						"id": id,
-					}, nil}
+					}, nil)
 
 					return
 				}
 				err = database.DeleteItem(createDB, new(T), uint(id))
 				if err != nil {
-					ch <- TWO[map[string]any, error]{nil, err}
+					output(nil, err)
+
 					return
 
 				} else {
-					ch <- TWO[map[string]any, error]{res, nil}
+					output(res, nil)
+
 					return
 
 				}
-			}(id, ch)
+			}(id)
 		}
 
 		var results = []map[string]interface{}{}

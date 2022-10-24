@@ -21,29 +21,32 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 		}
 
 		var ch = make(chan TWO[map[string]any, error])
-
+		var output = func(res map[string]any, err error) {
+			ch <- TWO[map[string]any, error]{res, err}
+		}
 		for _, input := range inputs {
 			delete(input, "id")
-			go func(input map[string]any, ch chan TWO[map[string]any, error]) {
+			go func(input map[string]any) {
 
 				var item = database.MapToStruct[T](input)
 				id, err := database.CreateItem(createDB, model, item)
 				if err != nil {
-					ch <- TWO[map[string]any, error]{nil, err}
+					output(nil, err)
 					return
 				} else {
 
 					res, err := database.GetItem(createDB, model, uint(id))
 					if err != nil {
-						ch <- TWO[map[string]any, error]{nil, err}
+						output(nil, err)
 						return
 					} else {
-						ch <- TWO[map[string]any, error]{res, nil}
+						output(res, nil)
+
 						return
 					}
 
 				}
-			}(input, ch)
+			}(input)
 		}
 		var results = []map[string]interface{}{}
 		for range inputs {
