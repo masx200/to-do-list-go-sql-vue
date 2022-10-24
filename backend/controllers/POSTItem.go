@@ -54,7 +54,7 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 			res := two.First
 			err := two.Second
 			if err != nil {
-				c.String(400, err.Error())
+				c.String(500, err.Error())
 				return
 			}
 			results = append(results, res)
