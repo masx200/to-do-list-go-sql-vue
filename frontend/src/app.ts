@@ -1,9 +1,18 @@
+import { ElNotification } from "element-plus";
 import { defineComponent, onMounted, ref } from "vue";
 import authorInput from "./author-input.vue";
 import { createItem } from "./controllers/createItem";
 import { deleteItems } from "./controllers/deleteItems";
 import { listItems, ToDoItemFull } from "./controllers/listItems";
-
+export function notifyerror(error: unknown) {
+    ElNotification({
+        title: "Error",
+        message: String(error),
+        type: "error",
+        position: "top-left",
+        duration: 10000,
+    });
+}
 export default defineComponent({
     components: { authorInput },
     setup() {
