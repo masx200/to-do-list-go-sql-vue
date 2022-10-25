@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import authorInput from "./author-input.vue";
+import { createItem } from "./controllers/createItem";
 
 const author = ref("");
 function onchange(target: string): void {
@@ -10,9 +11,15 @@ function onchange(target: string): void {
     // console.log(author)
 }
 
-function onclick(event: Event) {
+async function onclick(event: Event) {
     event.preventDefault();
     console.log(content, author);
+
+    await createItem({
+        author: author.value,
+        completed: false,
+        content: content.value,
+    });
 }
 
 const content = ref("");
