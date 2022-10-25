@@ -59,21 +59,24 @@ body,
         <div class="options" data-v-975e0b72="" data-v-167ca4dc="">
             <div class="filters" data-v-975e0b72="">
                 <span
-                    class="option active"
+                    :class="{ option: true, active: filters === 0 }"
                     data-v-975e0b72=""
                     @click="clearquery"
                     >全部</span
                 ><span
-                    class="option"
+                    :class="{ option: true, active: filters === 1 }"
                     data-v-975e0b72=""
                     @click="filternotcomplete"
                     >未完成</span
-                ><span class="option" data-v-975e0b72="" @click="filtercomplete"
+                ><span
+                    :class="{ option: true, active: filters === 2 }"
+                    data-v-975e0b72=""
+                    @click="filtercomplete"
                     >已完成</span
                 >
             </div>
-            <span class="option" data-v-975e0b72="" @click="ondelete"
-                >删除</span
+            <el-button size="large" @click="ondelete">
+                <span class="option" data-v-975e0b72="">删除</span></el-button
             >
         </div>
         <br />

@@ -73,10 +73,23 @@ export default defineComponent({
             multipleSelection.value = [];
             await onquery();
         }
+
+        const filters = ref(0);
+        const clearquery = () => {
+            query = {};
+            filters.value = 0;
+        };
+        function filternotcomplete() {
+            query = { completed: false };
+            filters.value = 1;
+        }
+        function filtercomplete() {
+            query = { completed: true };
+            filters.value = 2;
+        }
         return {
-            clearquery() {
-                query = {};
-            },
+            filters,
+            clearquery,
             onquery,
             ondelete,
             handleSelectionChange,
@@ -86,12 +99,8 @@ export default defineComponent({
             onsubmit,
             page,
             listdata,
-            filtercomplete() {
-                query = { completed: true };
-            },
-            filternotcomplete() {
-                query = { completed: false };
-            },
+            filtercomplete,
+            filternotcomplete,
         };
     },
 });
