@@ -1,9 +1,6 @@
 package controllers
 
 import (
-	"context"
-	"errors"
-
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -11,28 +8,14 @@ import (
 
 func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
 	r.DELETE(prefix, func(c *gin.Context) {
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
+
 		var inputs []map[string]any
 		err := c.ShouldBindJSON(&inputs)
 		if err != nil {
 			c.String(400, err.Error())
 			return
 		}
-		var ch = make(chan TWO[map[string]any, error])
-		var output = func(res map[string]any, err error) {
-			select {
-			case <-ctx.Done():
-				{
-					return
-				}
-			case ch <- TWO[map[string]any, error]{res, err}:
-				{
-					return
-				}
-			}
-
-		}
+		ids := []uint{}
 		for _, input := range inputs {
 			qsid, o := input["id"]
 			if !o {
@@ -45,57 +28,17 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 				c.String(400, err.Error())
 				return
 			}
-
-			go func(id float64) {
-				defer func() {
-
-					if err := recover(); err != nil {
-
-						e, o := err.(error)
-
-						if o {
-							output(nil, e)
-						} else {
-							output(nil, errors.New("unknown error"))
-						}
-					}
-				}()
-				var item = model
-				res, err := database.GetItem(createDB, item, uint(id))
-				/* 保持接口的幂等性 */
-				if err != nil {
-
-					output(gin.H{
-						"id": id,
-					}, nil)
-
-					return
-				}
-				err = database.DeleteItem(createDB, model, uint(id))
-				if err != nil {
-					output(nil, err)
-
-					return
-
-				} else {
-					output(res, nil)
-
-					return
-
-				}
-			}(id)
+			ids = append(ids, uint(id))
 		}
-
+		err = database.DeleteItems(createDB, model, ids)
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
 		var results = []map[string]interface{}{}
-		for range inputs {
-			two := <-ch
-			res := two.First
-			err := two.Second
-			if err != nil {
-				c.String(500, err.Error())
-				return
-			}
-			results = append(results, res)
+		for _, input := range ids {
+
+			results = append(results, map[string]any{"id": input})
 		}
 		c.JSON(200, results)
 

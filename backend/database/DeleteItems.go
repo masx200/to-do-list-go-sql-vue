@@ -4,12 +4,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func DeleteItem[T any](createDB func() *gorm.DB, model *T, id uint) error {
+func DeleteItems[T any](createDB func() *gorm.DB, model *T, ids []uint) error {
 	db := createDB()
 	sqlDB, err := db.DB()
 	if err != nil {
 		panic(err)
 	}
 	defer sqlDB.Close()
-	return db.Model(&model).Delete(model, id).Error
+	return db.Model(&model).Delete(model, ids).Error
 }
