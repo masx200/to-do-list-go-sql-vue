@@ -122,7 +122,7 @@ body,
                 ><span class="option" data-v-975e0b72="">未完成</span
                 ><span class="option" data-v-975e0b72="">已完成</span>
             </div>
-            <span class="option" data-v-975e0b72="">清除</span>
+            <span class="option" data-v-975e0b72="">删除</span>
         </footer>
     </main>
 </template>
