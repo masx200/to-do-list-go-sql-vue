@@ -1,18 +1,22 @@
 {
-  "name": "@masx200/to-do-list-go-sql-vue-frontend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@vitejs/plugin-vue": "^3.1.2",
-    "element-plus": "^2.2.19",
-    "prettier": "^2.7.1",
-    "typescript": "^4.8.4",
-    "vite": "^3.1.8",
-    "vue": "^3.2.41"
-  }
+    "name": "@masx200/to-do-list-go-sql-vue-frontend",
+    "version": "1.0.0",
+    "description": "",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc --noEmit && vite build",
+        "preview": "vite preview"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@vitejs/plugin-vue": "^3.1.2",
+        "element-plus": "^2.2.19",
+        "prettier": "^2.7.1",
+        "typescript": "^4.8.4",
+        "vite": "^3.1.8",
+        "vue": "^3.2.41"
+    }
 }
