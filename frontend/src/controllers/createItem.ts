@@ -1,23 +1,25 @@
 import config from "../../config.json";
+import axios from "axios";
 export const todoitemurl = config.todoitem;
 export async function createItem(item: ToDoItemNew) {
-    const myHeaders = new Headers();
+    const data = JSON.stringify([item]);
 
-    myHeaders.append("Content-Type", "application/json");
+    const config = {
+        method: "post",
+        url: todoitemurl,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: data,
+    };
 
-    const raw = JSON.stringify([item]);
-
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-    } as const;
-
-    return fetch(todoitemurl, requestOptions)
-        .then((response) => response.json())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
+    return axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 export interface ToDoItemNew {

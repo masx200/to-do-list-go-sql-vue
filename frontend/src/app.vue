@@ -13,7 +13,7 @@ function onchange(target: string): void {
 
 async function onclick(event: Event) {
     event.preventDefault();
-    console.log(content, author);
+    // console.log(content, author);
 
     await createItem({
         author: author.value,
