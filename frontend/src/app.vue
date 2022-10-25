@@ -42,12 +42,19 @@ async function onquery() {
         limit,
     });
 }
+const multipleSelection = ref<ToDoItemFull[]>([]);
+const handleSelectionChange = (val: ToDoItemFull[]) => {
+    multipleSelection.value = val;
+    console.log(multipleSelection);
+};
 </script>
 <style>
 div#app {
     width: 100%;
 }
-
+.options {
+    margin-top: 0 !important;
+}
 body,
 * {
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
@@ -62,17 +69,7 @@ body,
             </div>
             <div class="title" data-v-73841b6c="">To-Do List</div>
         </header>
-        <div style="display: flex; justify-content: space-around">
-            <span>页数</span>
-            <el-input-number
-                :stepStrictly="true"
-                :min="0"
-                :step="1"
-                v-model="page"
-                placeholder="page"
-            />
-            <el-button size="large" @click="onquery">查询</el-button>
-        </div>
+
         <div class="form-field" data-v-5f8a7fba="" data-v-167ca4dc="">
             <authorInput :input="author" @change="onchange" />
             <h1 class="title" data-v-5f8a7fba="">今天日程:</h1>
@@ -96,10 +93,33 @@ body,
             </form>
         </div>
         <hr />
-
+        <br />
+        <div style="display: flex; justify-content: space-around">
+            <span>页数</span>
+            <el-input-number
+                :stepStrictly="true"
+                :min="0"
+                :step="1"
+                v-model="page"
+                placeholder="page"
+            />
+            <el-button size="large" @click="onquery">查询</el-button>
+        </div>
+        <div class="options" data-v-975e0b72="" data-v-167ca4dc="">
+            <div class="filters" data-v-975e0b72="">
+                <span class="option active" data-v-975e0b72="">全部</span
+                ><span class="option" data-v-975e0b72="">未完成</span
+                ><span class="option" data-v-975e0b72="">已完成</span>
+            </div>
+            <span class="option" data-v-975e0b72="">删除</span>
+        </div>
         <br />
         <div>
-            <el-table :data="listdata" style="width: 100%; font-size: 20px">
+            <el-table
+                :data="listdata"
+                style="width: 100%; font-size: 20px"
+                @selection-change="handleSelectionChange"
+            >
                 <el-table-column type="selection" width="55" />
                 <el-table-column property="id" label="序号" width="120" />
                 <el-table-column
@@ -115,14 +135,5 @@ body,
         <hr />
 
         <br />
-
-        <footer class="options" data-v-975e0b72="" data-v-167ca4dc="">
-            <div class="filters" data-v-975e0b72="">
-                <span class="option active" data-v-975e0b72="">全部</span
-                ><span class="option" data-v-975e0b72="">未完成</span
-                ><span class="option" data-v-975e0b72="">已完成</span>
-            </div>
-            <span class="option" data-v-975e0b72="">删除</span>
-        </footer>
     </main>
 </template>
