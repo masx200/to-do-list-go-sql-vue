@@ -21,6 +21,11 @@ async function onclick(event: Event) {
 
 const content = ref("");
 </script>
+<style>
+div#app {
+    width: 100%;
+}
+</style>
 <template>
     <main class="container" data-v-167ca4dc="">
         <header class="heading" data-v-73841b6c="" data-v-167ca4dc="">
