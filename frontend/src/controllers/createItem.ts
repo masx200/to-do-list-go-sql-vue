@@ -14,7 +14,7 @@ export async function createItem(item: ToDoItemNew) {
     };
 
     return axios(config).then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data);
     });
 }
 

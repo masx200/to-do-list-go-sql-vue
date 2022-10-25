@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import authorInput from "./author-input.vue";
 import { createItem } from "./controllers/createItem";
-import { ToDoItemFull } from "./controllers/listItems";
+import { listItems, ToDoItemFull } from "./controllers/listItems";
 
 const author = ref("");
 function onchange(target: string): void {
@@ -22,18 +22,24 @@ async function onsubmit(event: Event) {
 
 const content = ref("");
 
-const listdata: ToDoItemFull[] = [
-    { id: 1, completed: false, content: "haha", author: "djw " },
-    { id: 21, completed: false, content: "h22aha", author: "d222jw " },
-];
+const listdata = ref([] as ToDoItemFull[]);
 
-const limit = 10;
+const limit = 20;
 
 const page = ref(0);
 
 const direction = "desc";
 
 const order = "id";
+
+async function onquery() {
+    listdata.value = await listItems({
+        order,
+        direction,
+        page: page.value,
+        limit,
+    });
+}
 </script>
 <style>
 div#app {
@@ -54,7 +60,7 @@ body,
             </div>
             <div class="title" data-v-73841b6c="">To-Do List</div>
         </header>
-        <div style="display: flex;justify-content: space-around;">
+        <div style="display: flex; justify-content: space-around">
             <span>页数</span>
             <el-input-number
                 :stepStrictly="true"
@@ -63,7 +69,7 @@ body,
                 v-model="page"
                 placeholder="page"
             />
-            <el-button size="large">查询</el-button>
+            <el-button size="large" @click="onquery">查询</el-button>
         </div>
         <div class="form-field" data-v-5f8a7fba="" data-v-167ca4dc="">
             <authorInput :input="author" @change="onchange" />
@@ -109,7 +115,6 @@ body,
         <br />
 
         <footer class="options" data-v-975e0b72="" data-v-167ca4dc="">
-            
             <div class="filters" data-v-975e0b72="">
                 <span class="option active" data-v-975e0b72="">全部</span
                 ><span class="option" data-v-975e0b72="">未完成</span
