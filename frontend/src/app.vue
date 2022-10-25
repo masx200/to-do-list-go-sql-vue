@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import authorInput from "./author-input.vue";
 import { createItem } from "./controllers/createItem";
 import { listItems, ToDoItemFull } from "./controllers/listItems";
-
+onMounted(() => {
+    onquery();
+});
 const author = ref("");
 function onchange(target: string): void {
     author.value = target;
