@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import authorInput from "./author-input.vue";
 import { createItem } from "./controllers/createItem";
+import { deleteItems } from "./controllers/deleteItems";
 import { listItems, ToDoItemFull } from "./controllers/listItems";
 onMounted(() => {
     onquery();
@@ -19,7 +20,8 @@ async function onsubmit(event: Event) {
         completed: false,
         content: content.value,
     });
-    content.value = "";
+    
+    await onquery();
 }
 
 const content = ref("");
@@ -45,8 +47,11 @@ async function onquery() {
 const multipleSelection = ref<ToDoItemFull[]>([]);
 const handleSelectionChange = (val: ToDoItemFull[]) => {
     multipleSelection.value = val;
-    console.log(multipleSelection);
 };
+async function ondelete() {
+    await deleteItems(multipleSelection.value.map((a) => ({ id: a.id })));
+    await onquery();
+}
 </script>
 <style>
 div#app {
@@ -111,7 +116,9 @@ body,
                 ><span class="option" data-v-975e0b72="">未完成</span
                 ><span class="option" data-v-975e0b72="">已完成</span>
             </div>
-            <span class="option" data-v-975e0b72="">删除</span>
+            <span class="option" data-v-975e0b72="" @click="ondelete"
+                >删除</span
+            >
         </div>
         <br />
         <div>
