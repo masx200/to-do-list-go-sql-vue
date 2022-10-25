@@ -109,13 +109,13 @@ body,
         <br />
 
         <footer class="options" data-v-975e0b72="" data-v-167ca4dc="">
-            <span data-v-975e0b72="">2 item left</span>
+            
             <div class="filters" data-v-975e0b72="">
-                <span class="option active" data-v-975e0b72="">All</span
-                ><span class="option" data-v-975e0b72="">Active</span
-                ><span class="option" data-v-975e0b72="">Completed</span>
+                <span class="option active" data-v-975e0b72="">全部</span
+                ><span class="option" data-v-975e0b72="">未完成</span
+                ><span class="option" data-v-975e0b72="">已完成</span>
             </div>
-            <span class="option" data-v-975e0b72="">Clear completed</span>
+            <span class="option" data-v-975e0b72="">清除</span>
         </footer>
     </main>
 </template>
