@@ -1,14 +1,21 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import authorInputVue from "./author-input.vue";
+import authorInput from "./author-input.vue";
 
 const author = ref("");
-function onchange(target: string) {
+function onchange(target: string): void {
     // console.log(target)
     author.value = target;
 
     // console.log(author)
 }
+
+function onclick(event: Event) {
+    event.preventDefault();
+    console.log(content, author);
+}
+
+const content = ref("");
 </script>
 <template>
     <main class="container" data-v-167ca4dc="">
@@ -19,17 +26,23 @@ function onchange(target: string) {
             <div class="title" data-v-73841b6c="">To-Do List</div>
         </header>
         <div class="form-field" data-v-5f8a7fba="" data-v-167ca4dc="">
-            <authorInputVue :input="author" @change="onchange" />
+            <authorInput :input="author" @change="onchange" />
             <h1 class="title" data-v-5f8a7fba="">~ Today I need to ~</h1>
             <form class="form-wrapper" data-v-5f8a7fba="">
                 <div class="form-input" data-v-5f8a7fba="">
                     <input
+                        v-model="content"
                         placeholder="Add new todo..."
                         autofocus="true"
                         data-v-5f8a7fba=""
                     />
                 </div>
-                <button type="submit" class="submit-btn" data-v-5f8a7fba="">
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-v-5f8a7fba=""
+                    @click="onclick"
+                >
                     <span data-v-5f8a7fba="">Submit</span>
                 </button>
             </form>
