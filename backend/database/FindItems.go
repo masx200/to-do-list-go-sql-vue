@@ -6,6 +6,11 @@ import (
 
 func FindItems[T any](createDB func() *gorm.DB, limit int, page int, model *T, query map[string]any, order string, direction string) ([]map[string]any, error) {
 	db := createDB()
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+	defer sqlDB.Close()
 	if direction == "desc" {
 		db = db.Order(order + " " + "DESC")
 	} else {
