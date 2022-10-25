@@ -1,0 +1,1 @@
+caddy run --config caddyfile.txt  --adapter caddyfile
