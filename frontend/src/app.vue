@@ -20,7 +20,7 @@ async function onsubmit(event: Event) {
         completed: false,
         content: content.value,
     });
-    
+
     await onquery();
 }
 
@@ -49,8 +49,9 @@ const handleSelectionChange = (val: ToDoItemFull[]) => {
     multipleSelection.value = val;
 };
 async function ondelete() {
+    if (multipleSelection.value.length === 0) return;
     await deleteItems(multipleSelection.value.map((a) => ({ id: a.id })));
-    multipleSelection.value=[]
+    multipleSelection.value = [];
     await onquery();
 }
 </script>
