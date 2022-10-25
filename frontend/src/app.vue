@@ -9,7 +9,7 @@ function onchange(target: string): void {
     author.value = target;
 }
 
-async function onclick(event: Event) {
+async function onsubmit(event: Event) {
     event.preventDefault();
 
     await createItem({
@@ -24,6 +24,7 @@ const content = ref("");
 
 const listdata: ToDoItemFull[] = [
     { id: 1, completed: false, content: "haha", author: "djw " },
+    { id: 21, completed: false, content: "h22aha", author: "d222jw " },
 ];
 </script>
 <style>
@@ -60,7 +61,7 @@ body,
                     type="submit"
                     class="submit-btn"
                     data-v-5f8a7fba=""
-                    @click="onclick"
+                    @click="onsubmit"
                 >
                     <span data-v-5f8a7fba="">Submit</span>
                 </button>
