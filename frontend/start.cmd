@@ -1,1 +1,1 @@
-npm run preview
+npx -y @masx200/serve-cli --path=dist --port=4173
