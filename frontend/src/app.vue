@@ -54,9 +54,15 @@ body,
             </div>
             <div class="title" data-v-73841b6c="">To-Do List</div>
         </header>
-        <div style="display: flex">
+        <div style="display: flex;justify-content: space-around;">
             <span>页数</span>
-            <el-input v-model="page" placeholder="page" />
+            <el-input-number
+                :stepStrictly="true"
+                :min="0"
+                :step="1"
+                v-model="page"
+                placeholder="page"
+            />
             <el-button size="large">查询</el-button>
         </div>
         <div class="form-field" data-v-5f8a7fba="" data-v-167ca4dc="">
