@@ -50,6 +50,7 @@ const handleSelectionChange = (val: ToDoItemFull[]) => {
 };
 async function ondelete() {
     await deleteItems(multipleSelection.value.map((a) => ({ id: a.id })));
+    multipleSelection.value=[]
     await onquery();
 }
 </script>
