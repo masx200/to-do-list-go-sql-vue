@@ -6,7 +6,7 @@ import { listItems, ToDoItemFull } from "./controllers/listItems";
 
 export default defineComponent({
     components: { authorInput },
-    setup(props, ctx) {
+    setup(_props, _ctx) {
         onMounted(() => {
             onquery();
         });
