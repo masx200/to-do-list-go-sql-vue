@@ -1,1 +1,1 @@
-go run main.go
+./main.exe
