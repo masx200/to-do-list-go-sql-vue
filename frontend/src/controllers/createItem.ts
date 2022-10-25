@@ -13,13 +13,9 @@ export async function createItem(item: ToDoItemNew) {
         data: data,
     };
 
-    return axios(config)
-        .then(function (response) {
-            console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    return axios(config).then(function (response) {
+        console.log(JSON.stringify(response.data));
+    });
 }
 
 export interface ToDoItemNew {

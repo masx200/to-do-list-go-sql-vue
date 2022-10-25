@@ -5,21 +5,18 @@ import { createItem } from "./controllers/createItem";
 
 const author = ref("");
 function onchange(target: string): void {
-    // console.log(target)
     author.value = target;
-
-    // console.log(author)
 }
 
 async function onclick(event: Event) {
     event.preventDefault();
-    // console.log(content, author);
 
     await createItem({
         author: author.value,
         completed: false,
         content: content.value,
     });
+    content.value = "";
 }
 
 const content = ref("");
