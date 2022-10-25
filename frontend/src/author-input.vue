@@ -1,5 +1,5 @@
 <template>
-    <h1>author:</h1>
+    <h2>作者:</h2>
     <el-input
         v-model="author"
         placeholder=" input your name"
