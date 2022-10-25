@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"errors"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
@@ -46,7 +47,19 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 			}
 
 			go func(id float64) {
+				defer func() {
 
+					if err := recover(); err != nil {
+
+						e, o := err.(error)
+
+						if o {
+							output(nil, e)
+						} else {
+							output(nil, errors.New("unknown error"))
+						}
+					}
+				}()
 				var item = model
 				res, err := database.GetItem(createDB, item, uint(id))
 				/* 保持接口的幂等性 */

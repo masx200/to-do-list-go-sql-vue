@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"errors"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
@@ -45,6 +46,19 @@ func PATCHItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mo
 			}
 			var item = input
 			go func(id float64, item map[string]any) {
+				defer func() {
+
+					if err := recover(); err != nil {
+
+						e, o := err.(error)
+
+						if o {
+							output(nil, e)
+						} else {
+							output(nil, errors.New("unknown error"))
+						}
+					}
+				}()
 				/* patch 不需要删除直接修改 */
 				err := database.UpdateItem(createDB, model, item, uint(id))
 				/* 保持接口的幂等性 */

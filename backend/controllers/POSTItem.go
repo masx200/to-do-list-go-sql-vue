@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"errors"
 
 	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,19 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 		for _, input := range inputs {
 			delete(input, "id")
 			go func(input map[string]any) {
+				defer func() {
+
+					if err := recover(); err != nil {
+
+						e, o := err.(error)
+
+						if o {
+							output(nil, e)
+						} else {
+							output(nil, errors.New("unknown error"))
+						}
+					}
+				}()
 
 				var item = database.MapToStruct[T](input)
 				id, err := database.CreateItem(createDB, model, item)
