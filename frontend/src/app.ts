@@ -7,8 +7,8 @@ import { listItems, ToDoItemFull } from "./controllers/listItems";
 export default defineComponent({
     components: { authorInput },
     setup() {
-        onMounted(() => {
-            onquery();
+        onMounted(async () => {
+            await onquery();
         });
         const author = ref("");
         function onchange(target: string): void {
