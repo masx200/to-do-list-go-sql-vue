@@ -1,13 +1,10 @@
 {
-    debug 
+	debug
 }
 http://localhost:7000 {
-
-reverse_proxy /todoitem* localhost:8000 {
-
-}
-reverse_proxy /* localhost:4173 {
-   
-}
-encode gzip
+	encode gzip
+	reverse_proxy /todoitem* localhost:8000 {
+	}
+	reverse_proxy /* localhost:4173 {
+	}
 }
