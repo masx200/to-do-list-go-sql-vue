@@ -1,3 +1,15 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+import authorInputVue from "./author-input.vue";
+
+const author = ref("");
+function onchange(target: string) {
+    // console.log(target)
+    author.value = target;
+
+    // console.log(author)
+}
+</script>
 <template>
     <main class="container" data-v-167ca4dc="">
         <header class="heading" data-v-73841b6c="" data-v-167ca4dc="">
@@ -7,6 +19,7 @@
             <div class="title" data-v-73841b6c="">To-Do List</div>
         </header>
         <div class="form-field" data-v-5f8a7fba="" data-v-167ca4dc="">
+            <authorInputVue :input="author" @change="onchange" />
             <h1 class="title" data-v-5f8a7fba="">~ Today I need to ~</h1>
             <form class="form-wrapper" data-v-5f8a7fba="">
                 <div class="form-input" data-v-5f8a7fba="">
