@@ -15,7 +15,7 @@ type ToDoItem struct {
 	DeletedAt DeletedAt `gorm:"index" json:"-"  `
 	Content   string    `gorm:"not null" json:"content"  form:"content"`
 
-	Finished bool `gorm:"not null;index" json:"finished" form:"finished" `
+	Completed bool `gorm:"not null;index" json:"completed" form:"completed" `
 
 	ID uint `gorm:"primarykey" json:"id" form:"id"`
 
