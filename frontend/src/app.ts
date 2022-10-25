@@ -3,7 +3,11 @@ import { defineComponent, onMounted, ref } from "vue";
 import authorInput from "./author-input.vue";
 import { createItem } from "./controllers/createItem";
 import { deleteItems } from "./controllers/deleteItems";
-import { listItems, ToDoItemFull } from "./controllers/listItems";
+import {
+    listItems,
+    QueryParameters,
+    ToDoItemFull,
+} from "./controllers/listItems";
 export function notifyerror(error: unknown) {
     ElNotification({
         title: "Error",
@@ -47,13 +51,14 @@ export default defineComponent({
         const direction = "desc";
 
         const order = "id";
-
+        let query: QueryParameters = {};
         async function onquery() {
             listdata.value = await listItems({
                 order,
                 direction,
                 page: page.value,
                 limit,
+                ...query,
             });
         }
         const multipleSelection = ref<ToDoItemFull[]>([]);
@@ -69,6 +74,9 @@ export default defineComponent({
             await onquery();
         }
         return {
+            clearquery() {
+                query = {};
+            },
             onquery,
             ondelete,
             handleSelectionChange,
@@ -78,6 +86,12 @@ export default defineComponent({
             onsubmit,
             page,
             listdata,
+            filtercomplete() {
+                query = { completed: true };
+            },
+            filternotcomplete() {
+                query = { completed: false };
+            },
         };
     },
 });

@@ -58,9 +58,19 @@ body,
         </div>
         <div class="options" data-v-975e0b72="" data-v-167ca4dc="">
             <div class="filters" data-v-975e0b72="">
-                <span class="option active" data-v-975e0b72="">全部</span
-                ><span class="option" data-v-975e0b72="">未完成</span
-                ><span class="option" data-v-975e0b72="">已完成</span>
+                <span
+                    class="option active"
+                    data-v-975e0b72=""
+                    @click="clearquery"
+                    >全部</span
+                ><span
+                    class="option"
+                    data-v-975e0b72=""
+                    @click="filternotcomplete"
+                    >未完成</span
+                ><span class="option" data-v-975e0b72="" @click="filtercomplete"
+                    >已完成</span
+                >
             </div>
             <span class="option" data-v-975e0b72="" @click="ondelete"
                 >删除</span
