@@ -57,7 +57,7 @@ body,
         <div style="display: flex">
             <span>页数</span>
             <el-input v-model="page" placeholder="page" />
-            <el-button>查询</el-button>
+            <el-button size="large">查询</el-button>
         </div>
         <div class="form-field" data-v-5f8a7fba="" data-v-167ca4dc="">
             <authorInput :input="author" @change="onchange" />
