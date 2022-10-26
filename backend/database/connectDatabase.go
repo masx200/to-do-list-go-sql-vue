@@ -36,5 +36,7 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) 
 	if err != nil {
 		panic(err)
 	}
+
+	CloseDB(db)
 	return createDB
 }
