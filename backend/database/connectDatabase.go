@@ -32,11 +32,11 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) 
 	}
 
 	db := createDB()
+	defer CloseDB(db)
 	err := db.AutoMigrate(model)
 	if err != nil {
 		panic(err)
 	}
 
-	CloseDB(db)
 	return createDB
 }
