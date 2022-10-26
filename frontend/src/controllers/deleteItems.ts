@@ -1,10 +1,10 @@
 import axios from "axios";
-import { todoitemurl } from "./createItem";
+import { todoitemurl } from "./createItems";
 
 export async function deleteItems(params: { id: number }[]) {
-    var data = JSON.stringify(params);
+    const data = JSON.stringify(params);
 
-    var config = {
+    const config = {
         method: "delete",
         url: todoitemurl,
         headers: {

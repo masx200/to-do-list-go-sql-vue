@@ -1,8 +1,8 @@
 import config from "../../config.json";
 import axios from "axios";
 export const todoitemurl = config.todoitem;
-export async function createItem(item: ToDoItemNew) {
-    const data = JSON.stringify([item]);
+export async function createItems(item: ToDoItemNew[]) {
+    const data = JSON.stringify(item);
 
     const config = {
         method: "post",

@@ -88,13 +88,27 @@ body,
             >
                 <el-table-column type="selection" width="55" />
                 <el-table-column property="id" label="序号" width="120" />
+
+                <el-table-column property="author" label="作者" width="120" />
+                <el-table-column property="content" label="内容" />
                 <el-table-column
                     property="completed"
                     label="完成"
                     width="120"
                 />
-                <el-table-column property="author" label="作者" width="120" />
-                <el-table-column property="content" label="内容" />
+                <el-table-column label="操作">
+                    <template #default="scope">
+                        <el-button size="small" @click="handleToggle(scope.row)"
+                            >切换</el-button
+                        >
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="handleDelete(scope.row)"
+                            >删除</el-button
+                        >
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
 

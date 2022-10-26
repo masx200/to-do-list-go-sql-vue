@@ -1,13 +1,14 @@
 import { ElNotification } from "element-plus";
 import { defineComponent, onMounted, ref } from "vue";
 import authorInput from "./author-input.vue";
-import { createItem } from "./controllers/createItem";
+import { createItems } from "./controllers/createItems";
 import { deleteItems } from "./controllers/deleteItems";
 import {
     listItems,
     QueryParameters,
     ToDoItemFull,
 } from "./controllers/listItems";
+import { patchItems } from "./controllers/patchItems";
 export function notifyerror(error: unknown) {
     ElNotification({
         title: "Error",
@@ -31,11 +32,13 @@ export default defineComponent({
         async function onsubmit(event: Event) {
             event.preventDefault();
 
-            await createItem({
-                author: author.value,
-                completed: false,
-                content: content.value,
-            });
+            await createItems([
+                {
+                    author: author.value,
+                    completed: false,
+                    content: content.value,
+                },
+            ]);
 
             await onquery();
         }
@@ -87,7 +90,17 @@ export default defineComponent({
             query = { completed: true };
             filters.value = 2;
         }
+        const handleToggle = async (row: ToDoItemFull) => {
+            await patchItems([{ id: row.id, completed: !row.completed }]);
+            await onquery();
+        };
+        const handleDelete = async (row: ToDoItemFull) => {
+            await deleteItems([{ id: row.id }]);
+            await onquery();
+        };
         return {
+            handleToggle,
+            handleDelete,
             filters,
             clearquery,
             onquery,
