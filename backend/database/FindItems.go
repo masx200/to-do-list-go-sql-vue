@@ -30,7 +30,7 @@ func FindByIDs[T any](createDB func() *gorm.DB, model *T, ids []uint) ([]map[str
 	}
 	defer sqlDB.Close()
 
-	var items = make([]map[string]any, len(ids))
+	var items = make([]map[string]any, 0)
 	result := db.Model(model).Omit("deleted_at").Find(&items, ids)
 
 	return items, result.Error
