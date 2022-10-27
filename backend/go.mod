@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/akrennmair/slice v0.0.0-20220105203817-49445747ab81
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect

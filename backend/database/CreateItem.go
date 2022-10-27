@@ -1,21 +1,22 @@
 package database
 
 import (
+	"github.com/akrennmair/slice"
 	"gorm.io/gorm"
 )
 
-func CreateItem[T any](createDB func() *gorm.DB, model *T, item *T) (uint, error) {
+func CreateItems[T any](createDB func() *gorm.DB, model *T, items []*T) ([]uint, error) {
 	db := createDB()
 	sqlDB, err := db.DB()
 	if err != nil {
 		panic(err)
 	}
 	defer sqlDB.Close()
-	var id uint
-	result := db.Model(model).Select("*").Omit("id", "deleted_at").Create(item)
+	var ids []uint
+	result := db.Model(model).Select("*").Omit("id", "deleted_at").Create(items)
 
-	id = JSONGetID(item)
-	return id, result.Error
+	ids = slice.Map(items, func(o *T) uint { return JSONGetID(o) }) // JSONGetID(items)
+	return ids, result.Error
 }
 func JSONGetID[T any](obj *T) uint {
 
