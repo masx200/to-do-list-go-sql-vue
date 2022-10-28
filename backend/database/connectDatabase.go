@@ -18,16 +18,8 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) 
 			db = db.Debug()
 		}
 
-		db = db.Model(model)
-		sqlDB, err := db.DB()
-		if err != nil {
-			panic(err)
-		}
-		// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-		sqlDB.SetMaxIdleConns(10)
+		db = db.Model(model).Session(&gorm.Session{})
 
-		// SetMaxOpenConns sets the maximum number of open connections to the database.
-		sqlDB.SetMaxOpenConns(100)
 		return db
 	}
 

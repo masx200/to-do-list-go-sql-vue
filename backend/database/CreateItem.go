@@ -7,11 +7,7 @@ import (
 
 func CreateItems[T any](createDB func() *gorm.DB, model *T, items []*T) ([]uint, error) {
 	db := createDB()
-	sqlDB, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	defer sqlDB.Close()
+	defer CloseDB(db)
 	var ids []uint
 	result := db.Model(model).Select("*").Omit("id", "deleted_at").Create(items)
 

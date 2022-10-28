@@ -9,11 +9,7 @@ func UpsertItem[T any](createDB func() *gorm.DB, model *T, item map[string]any, 
 	var obj T
 	empty := StructToMap(&obj)
 	db := createDB()
-	sqlDB, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	defer sqlDB.Close()
+	defer CloseDB(db)
 	for k, v := range item {
 		empty[k] = v
 	}

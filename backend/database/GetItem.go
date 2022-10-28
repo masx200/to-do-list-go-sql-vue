@@ -8,11 +8,7 @@ import (
 
 func GetItem[T any](createDB func() *gorm.DB, model *T, id uint) (map[string]interface{}, error) {
 	db := createDB()
-	sqlDB, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	defer sqlDB.Close()
+	defer CloseDB(db)
 	users := []map[string]interface{}{}
 	result := db.Limit(1).Model(&model).Omit("deleted_at").Where("id = ?", id).Find(&users)
 	if result.Error != nil {

@@ -24,11 +24,7 @@ func FindItems[T any](createDB func() *gorm.DB, limit int, page int, model *T, q
 
 func FindByIDs[T any](createDB func() *gorm.DB, model *T, ids []uint) ([]map[string]any, error) {
 	db := createDB()
-	sqlDB, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	defer sqlDB.Close()
+	defer CloseDB(db)
 
 	var items = make([]map[string]any, 0)
 	result := db.Model(model).Omit("deleted_at").Find(&items, ids)
