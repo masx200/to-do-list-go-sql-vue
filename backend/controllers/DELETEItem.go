@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
+func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.DELETE(prefix, func(c *gin.Context) {
 
 		var inputs []map[string]any
@@ -30,7 +30,7 @@ func DELETEItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, m
 			}
 			ids = append(ids, uint(id))
 		}
-		err = database.DeleteItems(createDB, model, ids)
+		err = database.DeleteItems(db, model, ids)
 		if err != nil {
 			c.String(500, err.Error())
 			return

@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func PATCHItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
+func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.PATCH(prefix, func(c *gin.Context) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -60,7 +60,7 @@ func PATCHItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mo
 					}
 				}()
 				/* patch 不需要删除直接修改 */
-				err := database.UpdateItem(createDB, model, item, uint(id))
+				err := database.UpdateItem(db, model, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
 
@@ -68,7 +68,7 @@ func PATCHItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mo
 
 					return
 				}
-				res, err := database.GetItem(createDB, model, uint(id))
+				res, err := database.GetItem(db, model, uint(id))
 				if err != nil {
 					output(nil, err)
 

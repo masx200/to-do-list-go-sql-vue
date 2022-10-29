@@ -4,13 +4,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func FindItems[T any](createDB func() *gorm.DB, limit int, page int, model *T, query map[string]any, order string, direction string) ([]map[string]any, error) {
-	db := createDB()
-	sqlDB, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	defer sqlDB.Close()
+func FindItems[T any](db *gorm.DB, limit int, page int, model *T, query map[string]any, order string, direction string) ([]map[string]any, error) {
+	db = CloneDB(db)
+	// sqlDB, err := db.DB()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer sqlDB.Close()
 	if direction == "desc" {
 		db = db.Order(order + " " + "DESC")
 	} else {
@@ -22,9 +22,9 @@ func FindItems[T any](createDB func() *gorm.DB, limit int, page int, model *T, q
 	return items, result.Error
 }
 
-func FindByIDs[T any](createDB func() *gorm.DB, model *T, ids []uint) ([]map[string]any, error) {
-	db := createDB()
-	defer CloseDB(db)
+func FindByIDs[T any](db *gorm.DB, model *T, ids []uint) ([]map[string]any, error) {
+	db = CloneDB(db)
+	// defer CloseDB(db)
 
 	var items = make([]map[string]any, 0)
 	result := db.Model(model).Omit("deleted_at").Find(&items, ids)

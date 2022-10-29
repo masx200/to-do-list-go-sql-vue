@@ -12,7 +12,7 @@ type TWO[T any, Y any] struct {
 	Second Y
 }
 
-func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
+func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.POST(prefix, func(c *gin.Context) {
 
 		var inputs []map[string]any
@@ -31,13 +31,13 @@ func POSTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 
 			return database.MapToStruct[T](input)
 		})
-		ids, err := database.CreateItems(createDB, model, items)
+		ids, err := database.CreateItems(db, model, items)
 		if err != nil {
 			c.String(500, err.Error())
 			return
 		}
 		var results []map[string]interface{}
-		results, err = database.FindByIDs(createDB, model, ids)
+		results, err = database.FindByIDs(db, model, ids)
 
 		if err != nil {
 			c.String(500, err.Error())

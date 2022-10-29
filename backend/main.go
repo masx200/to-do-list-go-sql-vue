@@ -15,14 +15,14 @@ func main() {
 	var LoadConfig = configs.LoadConfig
 	var model = &models.ToDoItem{}
 	config := LoadConfig()
-	createDB := database.ConnectDatabase(config.Dsn, &models.ToDoItem{}, "to_do_items", config.Debug)
+	db := database.ConnectDatabase(config.Dsn, &models.ToDoItem{}, "to_do_items", config.Debug)
 
 	if !config.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	routers.TodoRoute(r, createDB, "/todoitem", model)
+	routers.TodoRoute(r, db, "/todoitem", model)
 	//r.GET("/", func(c *gin.Context) {
 
 	//	c.String(200, "index")

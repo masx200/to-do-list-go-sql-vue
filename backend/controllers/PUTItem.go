@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func PUTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
+func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.PUT(prefix, func(c *gin.Context) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -61,7 +61,7 @@ func PUTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mode
 				}()
 				/* put 先删除再创建修改 */
 
-				err = database.UpsertItem(createDB, model, item, uint(id))
+				err = database.UpsertItem(db, model, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
 
@@ -69,7 +69,7 @@ func PUTItem[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mode
 
 					return
 				}
-				res, err := database.GetItem(createDB, model, uint(id))
+				res, err := database.GetItem(db, model, uint(id))
 				if err != nil {
 					output(nil, err)
 

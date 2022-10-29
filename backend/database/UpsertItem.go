@@ -5,11 +5,12 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func UpsertItem[T any](createDB func() *gorm.DB, model *T, item map[string]any, id uint) error {
+func UpsertItem[T any](db *gorm.DB, model *T, item map[string]any, id uint) error {
+	db = CloneDB(db)
 	var obj T
 	empty := StructToMap(&obj)
-	db := createDB()
-	defer CloseDB(db)
+
+	// defer CloseDB(db)
 	for k, v := range item {
 		empty[k] = v
 	}

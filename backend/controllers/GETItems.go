@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GETItems[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, model *T) {
+func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.GET(prefix, func(c *gin.Context) {
 
 		qsid := c.Query("id")
@@ -23,7 +23,7 @@ func GETItems[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 				return
 			}
 
-			res, err := database.GetItem(createDB, model, uint(id))
+			res, err := database.GetItem(db, model, uint(id))
 			if err != nil {
 				c.JSON(200, []map[string]interface{}{})
 			} else {
@@ -83,7 +83,7 @@ func GETItems[T any](r *gin.Engine, createDB func() *gorm.DB, prefix string, mod
 
 			}
 			delete(query, "id")
-			tdi, err := database.FindItems(createDB, limit, page, model, query, order, direction)
+			tdi, err := database.FindItems(db, limit, page, model, query, order, direction)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
