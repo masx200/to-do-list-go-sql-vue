@@ -21,20 +21,7 @@ func main() {
 
 	var lazyDB = lazy.Value[*gorm.DB]{New: func() (db *gorm.DB, err error) {
 
-		defer func() {
-
-			if err := recover(); err != nil {
-
-				e, o := err.(error)
-
-				if o {
-					err = e
-				} else {
-					err = errors.New("unknown error")
-				}
-			}
-		}()
-		db = database.ConnectDatabase(config.Dsn, &models.ToDoItem{}, "to_do_items", config.Debug)
+		db, err = database.ConnectDatabase(config.Dsn, &models.ToDoItem{}, "to_do_items", config.Debug)
 		return
 	}}
 

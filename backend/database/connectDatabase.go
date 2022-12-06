@@ -5,10 +5,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) *gorm.DB {
+func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	db = db.Table(TableName)
 	if debug {
@@ -18,8 +18,8 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) 
 
 	err = db.AutoMigrate(model)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return db
+	return db, nil
 }
