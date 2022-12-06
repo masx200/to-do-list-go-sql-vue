@@ -7,11 +7,11 @@ import (
 
 func CreateItems[T any](db *gorm.DB, model *T, items []*T) ([]uint, error) {
 	db = CloneDB(db)
-	// defer CloseDB(db)
+
 	var ids []uint
 	result := db.Model(model).Select("*").Omit("id", "deleted_at").Create(items)
 
-	ids = slice.Map(items, func(o *T) uint { return JSONGetID(o) }) // JSONGetID(items)
+	ids = slice.Map(items, func(o *T) uint { return JSONGetID(o) })
 	return ids, result.Error
 }
 func JSONGetID[T any](obj *T) uint {

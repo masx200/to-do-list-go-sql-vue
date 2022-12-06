@@ -31,20 +31,33 @@ func POSTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 
 			return database.MapToStruct[T](input)
 		})
-		ids, err := database.CreateItems(db, model, items)
+
+		// 开始事务
+		tx := CloneDB(db).Begin()
+		ids, err := database.CreateItems(tx, model, items)
 		if err != nil {
+			// 遇到错误时回滚事务
+			tx.Rollback()
 			c.String(500, err.Error())
 			return
 		}
 		var results []map[string]interface{}
-		results, err = database.FindByIDs(db, model, ids)
+		results, err = database.FindByIDs(tx, model, ids)
 
 		if err != nil {
+
+			// 遇到错误时回滚事务
+			tx.Rollback()
 			c.String(500, err.Error())
 			return
 		}
-
-		c.JSON(200, results)
-
+		// 否则，提交事务
+		err = tx.Commit().Error
+		if err == nil {
+			c.JSON(200, results)
+		} else {
+			c.String(500, err.Error())
+			return
+		}
 	})
 }
