@@ -9,8 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
+var CloneDB = database.CloneDB
+
 func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 	r.PATCH(prefix, func(c *gin.Context) {
+
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 		var inputs []map[string]any
@@ -32,15 +35,22 @@ func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				}
 			}
 		}
+
+		// 开始事务
+		tx := CloneDB(db).Begin()
 		for _, input := range inputs {
 			qsid, o := input["id"]
 			if !o {
+				// 遇到错误时回滚事务
+				tx.Rollback()
 				c.String(400, "expect id but not found")
 				return
 			}
 			id, ok := qsid.(float64)
 
 			if !ok {
+				// 遇到错误时回滚事务
+				tx.Rollback()
 				c.String(400, err.Error())
 				return
 			}
@@ -60,7 +70,7 @@ func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 					}
 				}()
 				/* patch 不需要删除直接修改 */
-				err := database.UpdateItem(db, model, item, uint(id))
+				err := database.UpdateItem(tx, model, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
 
@@ -68,7 +78,7 @@ func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 
 					return
 				}
-				res, err := database.GetItem(db, model, uint(id))
+				res, err := database.GetItem(tx, model, uint(id))
 				if err != nil {
 					output(nil, err)
 
@@ -89,11 +99,15 @@ func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			res := two.First
 			err := two.Second
 			if err != nil {
+				// 遇到错误时回滚事务
+				tx.Rollback()
 				c.String(500, err.Error())
 				return
 			}
 			results = append(results, res)
 		}
+		// 否则，提交事务
+		tx.Commit()
 		c.JSON(200, results)
 
 	})
