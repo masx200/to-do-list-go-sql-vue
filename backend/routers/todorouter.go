@@ -7,12 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func TodoRoute[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func TodoRoute[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix string, model *T) {
 
-	controllers.GETItems(r, db, prefix, model)
-	controllers.POSTItem(r, db, prefix, model)
+	controllers.GETItems(r, GetDB, prefix, model)
+	controllers.POSTItem(r, GetDB, prefix, model)
 
-	controllers.DELETEItem(r, db, prefix, model)
-	controllers.PUTItem(r, db, prefix, model)
-	controllers.PATCHItem(r, db, prefix, model)
+	controllers.DELETEItem(r, GetDB, prefix, model)
+	controllers.PUTItem(r, GetDB, prefix, model)
+	controllers.PATCHItem(r, GetDB, prefix, model)
 }

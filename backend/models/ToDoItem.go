@@ -1,8 +1,6 @@
 package models
 
 import (
-	// "encoding/json"
-
 	"time"
 
 	"gorm.io/gorm"

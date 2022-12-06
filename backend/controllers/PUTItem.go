@@ -9,12 +9,18 @@ import (
 	"gorm.io/gorm"
 )
 
-func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func PUTItem[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix string, model *T) {
 	r.PUT(prefix, func(c *gin.Context) {
+
+		var db, err = GetDB()
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 		var inputs []map[string]any
-		err := c.ShouldBindJSON(&inputs)
+		err = c.ShouldBindJSON(&inputs)
 		if err != nil {
 			c.String(400, err.Error())
 			return

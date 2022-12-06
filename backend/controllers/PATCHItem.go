@@ -11,13 +11,17 @@ import (
 
 var CloneDB = database.CloneDB
 
-func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func PATCHItem[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix string, model *T) {
 	r.PATCH(prefix, func(c *gin.Context) {
-
+		var db, err = GetDB()
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 		var inputs []map[string]any
-		err := c.ShouldBindJSON(&inputs)
+		err = c.ShouldBindJSON(&inputs)
 		if err != nil {
 			c.String(400, err.Error())
 			return

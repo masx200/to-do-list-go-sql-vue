@@ -6,11 +6,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func DELETEItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func DELETEItem[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix string, model *T) {
 	r.DELETE(prefix, func(c *gin.Context) {
-
+		var db, err = GetDB()
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
 		var inputs []map[string]any
-		err := c.ShouldBindJSON(&inputs)
+		err = c.ShouldBindJSON(&inputs)
 		if err != nil {
 			c.String(400, err.Error())
 			return

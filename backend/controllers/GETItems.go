@@ -9,9 +9,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
+func GETItems[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix string, model *T) {
 	r.GET(prefix, func(c *gin.Context) {
-
+		var db, err = GetDB()
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
 		qsid := c.Query("id")
 
 		if len(qsid) != 0 {
@@ -36,6 +40,11 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 
 	},
 		func(c *gin.Context) {
+			var db, err = GetDB()
+			if err != nil {
+				c.String(500, err.Error())
+				return
+			}
 			qsid := c.Query("id")
 
 			if len(qsid) != 0 {
@@ -43,7 +52,7 @@ func GETItems[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			}
 			c.Abort()
 			var parameters models.QueryParameters
-			err := c.ShouldBindQuery(&parameters)
+			err = c.ShouldBindQuery(&parameters)
 			if err != nil {
 				c.String(400, err.Error())
 				return
