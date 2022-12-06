@@ -16,7 +16,6 @@ func ConnectDatabase[T any](dsn string, model *T, TableName string, debug bool) 
 	}
 	db = db.Model(model).Session(&gorm.Session{})
 
-	// defer CloseDB(db)
 	err = db.AutoMigrate(model)
 	if err != nil {
 		panic(err)
