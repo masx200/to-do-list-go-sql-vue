@@ -43,7 +43,16 @@ func main() {
 	}
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	var GetDB = func() (*gorm.DB, error) { return lazyDB.Get() }
+	var GetDB = func() (*gorm.DB, error) {
+		var db, err = lazyDB.Get()
+		if err != nil {
+			return nil, err
+		}
+		if db == nil {
+			return nil, errors.New("db is  nil pointer")
+		}
+		return db, err
+	}
 	routers.TodoRoute(r, GetDB, "/todoitem", model)
 
 	r.Run(":" + strconv.Itoa(config.Port))

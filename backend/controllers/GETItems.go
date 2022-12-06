@@ -14,8 +14,10 @@ func GETItems[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix strin
 		var db, err = GetDB()
 		if err != nil {
 			c.String(500, err.Error())
+			c.Abort()
 			return
 		}
+
 		qsid := c.Query("id")
 
 		if len(qsid) != 0 {
