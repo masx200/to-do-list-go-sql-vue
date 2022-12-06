@@ -34,6 +34,13 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 		}
 		// 开始事务
 		tx := CloneDB(db).Begin()
+		err = tx.Error
+		if err != nil {
+			// 遇到错误时回滚事务
+			tx.Rollback()
+			c.String(500, err.Error())
+			return
+		}
 		for _, input := range inputs {
 			qsid, o := input["id"]
 			if !o {
