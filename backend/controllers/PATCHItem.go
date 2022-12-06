@@ -107,8 +107,12 @@ func PATCHItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			results = append(results, res)
 		}
 		// 否则，提交事务
-		tx.Commit()
-		c.JSON(200, results)
-
+		err = tx.Commit().Error
+		if err == nil {
+			c.JSON(200, results)
+		} else {
+			c.String(500, err.Error())
+			return
+		}
 	})
 }
