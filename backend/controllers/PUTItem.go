@@ -32,15 +32,21 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				}
 			}
 		}
+		// 开始事务
+		tx := CloneDB(db).Begin()
 		for _, input := range inputs {
 			qsid, o := input["id"]
 			if !o {
+				// 遇到错误时回滚事务
+				tx.Rollback()
 				c.String(400, "expect id but not found")
 				return
 			}
 			id, ok := qsid.(float64)
 
 			if !ok {
+				// 遇到错误时回滚事务
+				tx.Rollback()
 				c.String(400, err.Error())
 				return
 			}
@@ -61,7 +67,7 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 				}()
 				/* put 先删除再创建修改 */
 
-				err = database.UpsertItem(db, model, item, uint(id))
+				err = database.UpsertItem(tx, model, item, uint(id))
 				/* 保持接口的幂等性 */
 				if err != nil {
 
@@ -69,7 +75,7 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 
 					return
 				}
-				res, err := database.GetItem(db, model, uint(id))
+				res, err := database.GetItem(tx, model, uint(id))
 				if err != nil {
 					output(nil, err)
 
@@ -90,12 +96,20 @@ func PUTItem[T any](r *gin.Engine, db *gorm.DB, prefix string, model *T) {
 			res := two.First
 			err := two.Second
 			if err != nil {
+				// 遇到错误时回滚事务
+				tx.Rollback()
 				c.String(500, err.Error())
 				return
 			}
 			results = append(results, res)
 		}
-		c.JSON(200, results)
-
+		// 否则，提交事务
+		err = tx.Commit().Error
+		if err == nil {
+			c.JSON(200, results)
+		} else {
+			c.String(500, err.Error())
+			return
+		}
 	})
 }
