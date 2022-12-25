@@ -59,17 +59,17 @@ body,
         <div class="options" data-v-975e0b72="" data-v-167ca4dc="">
             <div class="filters" data-v-975e0b72="">
                 <span
-                    :class="{ option: true, active: filters === 0 }"
+                    :class="{ option: true, active: filterState === 0 }"
                     data-v-975e0b72=""
                     @click="clearquery"
                     >全部</span
                 ><span
-                    :class="{ option: true, active: filters === 1 }"
+                    :class="{ option: true, active: filterState === 1 }"
                     data-v-975e0b72=""
                     @click="filternotcomplete"
                     >未完成</span
                 ><span
-                    :class="{ option: true, active: filters === 2 }"
+                    :class="{ option: true, active: filterState === 2 }"
                     data-v-975e0b72=""
                     @click="filtercomplete"
                     >已完成</span

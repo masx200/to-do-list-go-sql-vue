@@ -1,5 +1,5 @@
 import { ElNotification } from "element-plus";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import authorInput from "./author-input.vue";
 import { createItems } from "./controllers/createItems";
 import { deleteItems } from "./controllers/deleteItems";
@@ -9,6 +9,8 @@ import {
     ToDoItemFull,
 } from "./controllers/listItems";
 import { patchItems } from "./controllers/patchItems";
+
+
 export function notifyerror(error: unknown) {
     ElNotification({
         title: "Error",
@@ -77,18 +79,19 @@ export default defineComponent({
             await onquery();
         }
 
-        const filters = ref(0);
+        const filterState = ref(0);
+        watch(filterState, async () => await onquery());
         const clearquery = () => {
             query = {};
-            filters.value = 0;
+            filterState.value = 0;
         };
         function filternotcomplete() {
             query = { completed: false };
-            filters.value = 1;
+            filterState.value = 1;
         }
         function filtercomplete() {
             query = { completed: true };
-            filters.value = 2;
+            filterState.value = 2;
         }
         const handleToggle = async (row: ToDoItemFull) => {
             await patchItems([{ id: row.id, completed: !row.completed }]);
@@ -101,7 +104,7 @@ export default defineComponent({
         return {
             handleToggle,
             handleDelete,
-            filters,
+            filterState: filterState,
             clearquery,
             onquery,
             ondelete,
