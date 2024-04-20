@@ -29,5 +29,5 @@ jobs:
     - run: |
         cd frontend
         npx -y cnpm install
-    - run: npm run build 
+        npm run build 
 
