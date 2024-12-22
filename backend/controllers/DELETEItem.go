@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"github.com/gin-gonic/gin"
+	"github.com/masx200/to-do-list-go-sql-vue/backend/database"
 	"gorm.io/gorm"
 )
 

@@ -3,9 +3,9 @@ package controllers
 import (
 	"strconv"
 
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/database"
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/models"
 	"github.com/gin-gonic/gin"
+	"github.com/masx200/to-do-list-go-sql-vue/backend/database"
+	"github.com/masx200/to-do-list-go-sql-vue/backend/models"
 	"gorm.io/gorm"
 )
 

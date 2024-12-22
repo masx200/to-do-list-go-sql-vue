@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"gitee.com/masx200/to-do-list-go-sql-vue/backend/controllers"
+	"github.com/masx200/to-do-list-go-sql-vue/backend/controllers"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
