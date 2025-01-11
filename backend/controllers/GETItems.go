@@ -31,9 +31,9 @@ func GETItems[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix strin
 
 			res, err := database.GetItem(db, model, uint(id))
 			if err != nil {
-				c.JSON(200, []map[string]interface{}{})
+				c.String(500, err.Error())
 			} else {
-				c.JSON(200, []map[string]interface{}{res})
+				c.JSON(200, map[string]interface{}{"data": res, "count": 1})
 			}
 			return
 		} else {
@@ -94,11 +94,16 @@ func GETItems[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix strin
 
 			}
 			delete(query, "id")
+			count, err := database.CountItems(db, model, query)
+			if err != nil {
+				c.String(500, err.Error())
+				return
+			}
 			tdi, err := database.FindItems(db, limit, page, model, query, order, direction)
 			if err != nil {
 				c.String(500, err.Error())
 			} else {
-				c.JSON(200, tdi)
+				c.JSON(200, map[string]interface{}{"data": tdi, "count": count})
 			}
 
 		})

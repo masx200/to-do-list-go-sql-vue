@@ -44,27 +44,29 @@ export default defineComponent({
 
             await onquery();
         }
-
+        const totalpage = ref(0);
         const content = ref("");
 
         const listdata = ref([] as ToDoItemFull[]);
 
         const limit = 20;
 
-        const page = ref(0);
+        const page = ref(1);
 
         const direction = "desc";
 
         const order = "id";
         let query: QueryParameters = {};
         async function onquery() {
-            listdata.value = await listItems({
+            const result = await listItems({
                 order,
                 direction,
                 page: page.value,
                 limit,
                 ...query,
             });
+            listdata.value = result.data;
+            totalpage.value = Math.ceil(result.count / limit);
         }
         const multipleSelection = ref<ToDoItemFull[]>([]);
         const handleSelectionChange = (val: ToDoItemFull[]) => {

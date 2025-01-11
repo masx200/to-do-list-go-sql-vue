@@ -7,9 +7,10 @@ export interface ToDoItemFull {
     content: string;
     completed: boolean;
 }
+export type ToDoItemResult = { data: ToDoItemFull[]; count: number };
 export async function listItems(
     params: QueryParameters
-): Promise<ToDoItemFull[]> {
+): Promise<ToDoItemResult> {
     const config = {
         params: params,
         method: "get",
