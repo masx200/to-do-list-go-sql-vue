@@ -1,6 +1,6 @@
 module github.com/masx200/to-do-list-go-sql-vue
 
-go 1.21.0
+go 1.23
 
 toolchain go1.23.2
 
