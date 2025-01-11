@@ -12,10 +12,10 @@ type Config struct {
 	Debug bool   `json:"debug"`
 }
 
-func LoadConfig() Config {
+func LoadConfig(configfile string) Config {
 
 	config := Config{}
-	text, err := os.ReadFile("./config.json")
+	text, err := os.ReadFile(configfile)
 	if err != nil {
 		panic(err)
 	}

@@ -62,7 +62,9 @@ func PATCHItem[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix stri
 			if !ok {
 				// 遇到错误时回滚事务
 				tx.Rollback()
-				c.String(400, err.Error())
+				c.String(400,
+
+					"expect id float64 but not found")
 				return
 			}
 			var item = input

@@ -29,7 +29,8 @@ func DELETEItem[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix str
 			id, ok := qsid.(float64)
 
 			if !ok {
-				c.String(400, err.Error())
+				c.String(400,
+					"expect id to be float64 but got %T", qsid)
 				return
 			}
 			ids = append(ids, uint(id))
