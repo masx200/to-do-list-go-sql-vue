@@ -1,0 +1,526 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "to-do-list-go-sql-vue",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/todoitem": {
+      "get": {
+        "summary": "todoitem",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "desc",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "0",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "20",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "Basic dG9kb2xpc3Q6dG9kb2xpc3Q=",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "author": {
+                            "type": "string"
+                          },
+                          "completed": {
+                            "type": "boolean"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "author",
+                          "completed",
+                          "content",
+                          "created_at",
+                          "id",
+                          "updated_at"
+                        ],
+                        "x-apifox-ignore-properties": [],
+                        "x-apifox-orders": [
+                          "author",
+                          "completed",
+                          "content",
+                          "created_at",
+                          "id",
+                          "updated_at"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "count",
+                    "data"
+                  ],
+                  "x-apifox-ignore-properties": [],
+                  "x-apifox-orders": [
+                    "count",
+                    "data"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "count": 74,
+                      "data": [
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:56.89+08:00",
+                          "id": 121,
+                          "updated_at": "2025-01-11T16:30:56.89+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:55.97+08:00",
+                          "id": 120,
+                          "updated_at": "2025-01-11T16:30:55.97+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:55.394+08:00",
+                          "id": 119,
+                          "updated_at": "2025-01-11T16:30:55.394+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:51.393+08:00",
+                          "id": 118,
+                          "updated_at": "2025-01-11T16:30:51.393+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:51.249+08:00",
+                          "id": 117,
+                          "updated_at": "2025-01-11T16:30:51.249+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.961+08:00",
+                          "id": 116,
+                          "updated_at": "2025-01-11T16:30:50.961+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.698+08:00",
+                          "id": 115,
+                          "updated_at": "2025-01-11T16:30:50.698+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.602+08:00",
+                          "id": 114,
+                          "updated_at": "2025-01-11T16:30:50.602+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.449+08:00",
+                          "id": 113,
+                          "updated_at": "2025-01-11T16:30:50.449+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.304+08:00",
+                          "id": 112,
+                          "updated_at": "2025-01-11T16:30:50.304+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.161+08:00",
+                          "id": 111,
+                          "updated_at": "2025-01-11T16:30:50.161+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:50.026+08:00",
+                          "id": 110,
+                          "updated_at": "2025-01-11T16:30:50.026+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.914+08:00",
+                          "id": 109,
+                          "updated_at": "2025-01-11T16:30:49.914+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.737+08:00",
+                          "id": 108,
+                          "updated_at": "2025-01-11T16:30:49.737+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.596+08:00",
+                          "id": 107,
+                          "updated_at": "2025-01-11T16:30:49.596+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.456+08:00",
+                          "id": 106,
+                          "updated_at": "2025-01-11T16:30:49.456+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.316+08:00",
+                          "id": 105,
+                          "updated_at": "2025-01-11T16:30:49.316+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.184+08:00",
+                          "id": 104,
+                          "updated_at": "2025-01-11T16:30:49.184+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:49.033+08:00",
+                          "id": 103,
+                          "updated_at": "2025-01-11T16:30:49.033+08:00"
+                        },
+                        {
+                          "author": "5666",
+                          "completed": false,
+                          "content": "355",
+                          "created_at": "2025-01-11T16:30:48.887+08:00",
+                          "id": 102,
+                          "updated_at": "2025-01-11T16:30:48.887+08:00"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {},
+            "x-apifox-name": "成功"
+          }
+        },
+        "security": [],
+        "x-apifox-folder": "",
+        "x-apifox-status": "developing",
+        "x-run-in-apifox": "https://app.apifox.com/web/project/5750564/apis/api-253515903-run"
+      },
+      "delete": {
+        "summary": "todoitem",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "Basic dG9kb2xpc3Q6dG9kb2xpc3Q=",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID 编号"
+                    }
+                  },
+                  "x-apifox-orders": [
+                    "id"
+                  ],
+                  "required": [
+                    "id"
+                  ],
+                  "x-apifox-ignore-properties": []
+                }
+              },
+              "example": [
+                {
+                  "id": 77
+                },
+                {
+                  "id": 76
+                },
+                {
+                  "id": 75
+                },
+                {
+                  "id": 74
+                },
+                {
+                  "id": 73
+                },
+                {
+                  "id": 72
+                },
+                {
+                  "id": 71
+                },
+                {
+                  "id": 70
+                },
+                {
+                  "id": 69
+                },
+                {
+                  "id": 68
+                },
+                {
+                  "id": 67
+                },
+                {
+                  "id": 66
+                },
+                {
+                  "id": 65
+                },
+                {
+                  "id": 64
+                },
+                {
+                  "id": 63
+                },
+                {
+                  "id": 62
+                },
+                {
+                  "id": 61
+                },
+                {
+                  "id": 60
+                },
+                {
+                  "id": 59
+                },
+                {
+                  "id": 58
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ],
+                    "x-apifox-ignore-properties": [],
+                    "x-apifox-orders": [
+                      "id"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": [
+                      {
+                        "id": 77
+                      },
+                      {
+                        "id": 76
+                      },
+                      {
+                        "id": 75
+                      },
+                      {
+                        "id": 74
+                      },
+                      {
+                        "id": 73
+                      },
+                      {
+                        "id": 72
+                      },
+                      {
+                        "id": 71
+                      },
+                      {
+                        "id": 70
+                      },
+                      {
+                        "id": 69
+                      },
+                      {
+                        "id": 68
+                      },
+                      {
+                        "id": 67
+                      },
+                      {
+                        "id": 66
+                      },
+                      {
+                        "id": 65
+                      },
+                      {
+                        "id": 64
+                      },
+                      {
+                        "id": 63
+                      },
+                      {
+                        "id": 62
+                      },
+                      {
+                        "id": 61
+                      },
+                      {
+                        "id": 60
+                      },
+                      {
+                        "id": 59
+                      },
+                      {
+                        "id": 58
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {},
+            "x-apifox-name": "成功"
+          }
+        },
+        "security": [],
+        "x-apifox-folder": "",
+        "x-apifox-status": "developing",
+        "x-run-in-apifox": "https://app.apifox.com/web/project/5750564/apis/api-253527320-run"
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}
