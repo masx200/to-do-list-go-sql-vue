@@ -46,14 +46,36 @@ body,
         </div>
         <hr />
         <br />
-        <div style="display: flex; justify-content: space-around">
-            <span>页数</span>
+        <div
+            style="
+                display: flex;
+                justify-content: space-around;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-content: center;
+                align-items: center;
+            "
+        >
+            <!-- <span>页数</span>
             <el-input-number
                 :stepStrictly="true"
                 :min="0"
                 :step="1"
                 v-model="page"
                 placeholder="page"
+            /> -->
+
+            <el-pagination
+                v-model:current-page="currentPage4"
+                v-model:page-size="pageSize4"
+                :page-sizes="[10, 20, 30, 40]"
+                :size="size"
+                :disabled="disabled"
+                :background="background"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
             />
             <el-button size="large" @click="onquery">查询</el-button>
         </div>

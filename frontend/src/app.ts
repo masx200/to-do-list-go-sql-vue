@@ -44,14 +44,14 @@ export default defineComponent({
 
             await onquery();
         }
-        const totalpage = ref(0);
+        const total = ref(0);
         const content = ref("");
 
         const listdata = ref([] as ToDoItemFull[]);
 
         const limit = 20;
 
-        const page = ref(1);
+        const currentPage4 = ref(1);
 
         const direction = "desc";
 
@@ -61,12 +61,12 @@ export default defineComponent({
             const result = await listItems({
                 order,
                 direction,
-                page: page.value,
-                limit,
+                page: currentPage4.value,
+                limit: pageSize4.value,
                 ...query,
             });
             listdata.value = result.data;
-            totalpage.value = Math.ceil(result.count / limit);
+            total.value = result.count;
         }
         const multipleSelection = ref<ToDoItemFull[]>([]);
         const handleSelectionChange = (val: ToDoItemFull[]) => {
@@ -103,7 +103,21 @@ export default defineComponent({
             await deleteItems([{ id: row.id }]);
             await onquery();
         };
+        const pageSize4 = ref(limit);
+        const handleCurrentChange = (val: number) => {
+            return onquery();
+        };
+        const handleSizeChange = (val: number) => {
+            return onquery();
+        };
         return {
+            handleCurrentChange,
+            handleSizeChange,
+            currentPage4,
+            pageSize4,
+            background: true,
+            disabled: false,
+            size: "large",
             handleToggle,
             handleDelete,
             filterState: filterState,
@@ -114,8 +128,9 @@ export default defineComponent({
             author,
             onchange,
             content,
+            total,
             onsubmit,
-            page,
+
             listdata,
             filtercomplete,
             filternotcomplete,
