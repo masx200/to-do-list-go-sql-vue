@@ -1,4 +1,4 @@
-import { ElNotification } from "element-plus";
+import { ElNotification, ElMessage } from "element-plus";
 import { defineComponent, onMounted, ref, watch } from "vue";
 import authorInput from "./author-input.vue";
 import { createItems } from "./controllers/createItems";
@@ -9,7 +9,6 @@ import {
     ToDoItemFull,
 } from "./controllers/listItems";
 import { patchItems } from "./controllers/patchItems";
-
 
 export function notifyerror(error: unknown) {
     ElNotification({
@@ -33,7 +32,8 @@ export default defineComponent({
 
         async function onsubmit(event: Event) {
             event.preventDefault();
-
+            if (!author.value || !content.value)
+                return ElMessage.error("请输入内容,作者或者内容不能为空");
             await createItems([
                 {
                     author: author.value,

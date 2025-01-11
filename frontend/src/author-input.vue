@@ -1,6 +1,7 @@
 <template>
     <h2>作者:</h2>
     <el-input
+        required
         v-model="author"
         placeholder=" input your name"
         @input="onchange"

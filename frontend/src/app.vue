@@ -27,6 +27,7 @@ body,
             <form class="form-wrapper" data-v-5f8a7fba="">
                 <div class="form-input" data-v-5f8a7fba="">
                     <input
+                        required
                         v-model="content"
                         placeholder="Add new todo..."
                         autofocus="true"
