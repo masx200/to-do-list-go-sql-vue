@@ -98,6 +98,16 @@ body,
                     >已完成</span
                 >
             </div>
+            <el-button size="large" @click="onmarkfinish">
+                <span class="option" data-v-975e0b72=""
+                    >标记为已完成</span
+                ></el-button
+            >
+            <el-button size="large" @click="onmarknotfinish">
+                <span class="option" data-v-975e0b72=""
+                    >标记为未完成</span
+                ></el-button
+            >
             <el-button size="large" @click="ondelete">
                 <span class="option" data-v-975e0b72="">删除</span></el-button
             >

@@ -110,7 +110,31 @@ export default defineComponent({
         const handleSizeChange = (val: number) => {
             return onquery();
         };
+        async function onmarkfinish() {
+            if (multipleSelection.value.length === 0) return;
+            await patchItems(
+                multipleSelection.value.map((a) => ({
+                    id: a.id,
+                    completed: true,
+                }))
+            );
+            multipleSelection.value = [];
+            await onquery();
+        }
+        async function onmarknotfinish() {
+            if (multipleSelection.value.length === 0) return;
+            await patchItems(
+                multipleSelection.value.map((a) => ({
+                    id: a.id,
+                    completed: false,
+                }))
+            );
+            multipleSelection.value = [];
+            await onquery();
+        }
         return {
+            onmarkfinish,
+            onmarknotfinish,
             handleCurrentChange,
             handleSizeChange,
             currentPage4,

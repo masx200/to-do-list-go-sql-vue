@@ -49,63 +49,65 @@ func PATCHItem[T any](r *gin.Engine, GetDB func() (*gorm.DB, error), prefix stri
 			c.String(500, err.Error())
 			return
 		}
-		for _, input := range inputs {
-			qsid, o := input["id"]
-			if !o {
-				// 遇到错误时回滚事务
-				tx.Rollback()
-				c.String(400, "expect id but not found")
-				return
-			}
-			id, ok := qsid.(float64)
+		go func() {
 
-			if !ok {
-				// 遇到错误时回滚事务
-				tx.Rollback()
-				c.String(400,
+			for _, input := range inputs {
+				qsid, o := input["id"]
+				if !o {
+					// 遇到错误时回滚事务
+					tx.Rollback()
+					c.String(400, "expect id but not found")
+					return
+				}
+				id, ok := qsid.(float64)
 
-					"expect id float64 but not found")
-				return
-			}
-			var item = input
-			go func(id float64, item map[string]any) {
-				defer func() {
+				if !ok {
+					// 遇到错误时回滚事务
+					tx.Rollback()
+					c.String(400,
 
-					if err := recover(); err != nil {
+						"expect id float64 but not found")
+					return
+				}
+				var item = input
+				func(id float64, item map[string]any) {
+					defer func() {
 
-						e, o := err.(error)
+						if err := recover(); err != nil {
 
-						if o {
-							output(nil, e)
-						} else {
-							output(nil, errors.New("unknown error"))
+							e, o := err.(error)
+
+							if o {
+								output(nil, e)
+							} else {
+								output(nil, errors.New("unknown error"))
+							}
 						}
+					}()
+					/* patch 不需要删除直接修改 */
+					err := database.UpdateItem(tx, model, item, uint(id))
+					/* 保持接口的幂等性 */
+					if err != nil {
+
+						output(nil, err)
+
+						return
 					}
-				}()
-				/* patch 不需要删除直接修改 */
-				err := database.UpdateItem(tx, model, item, uint(id))
-				/* 保持接口的幂等性 */
-				if err != nil {
+					res, err := database.GetItem(tx, model, uint(id))
+					if err != nil {
+						output(nil, err)
 
-					output(nil, err)
+						return
 
-					return
-				}
-				res, err := database.GetItem(tx, model, uint(id))
-				if err != nil {
-					output(nil, err)
+					} else {
+						output(res, nil)
 
-					return
+						return
 
-				} else {
-					output(res, nil)
-
-					return
-
-				}
-			}(id, item)
-		}
-
+					}
+				}(id, item)
+			}
+		}()
 		var results = []map[string]interface{}{}
 		for range inputs {
 			two := <-ch
