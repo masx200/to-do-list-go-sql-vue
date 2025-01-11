@@ -1,5 +1,7 @@
 {
   "dsn": "todolist:todolist@tcp(127.0.0.1:3306)/todolist?charset=utf8mb4&parseTime=True&loc=Local",
   "port": 8000,
-  "debug": true
+  "debug": true,
+  "username": "todolist",
+  "password": "todolist"
 }

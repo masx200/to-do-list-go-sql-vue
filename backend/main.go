@@ -3,10 +3,12 @@ package main
 import (
 	"bufio"
 	"database/sql"
+	"encoding/base64"
 	"errors"
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -20,6 +22,7 @@ import (
 	"github.com/masx200/to-do-list-go-sql-vue/backend/models"
 	"github.com/masx200/to-do-list-go-sql-vue/backend/routers"
 	"gorm.io/gorm"
+
 )
 
 func main() {
@@ -110,8 +113,37 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Use(basicAuth(config.Username, config.Password))
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	routers.TodoRoute(r, GetDB, "/todoitem", model)
 	r.Run(":" + strconv.Itoa(config.Port))
 
+}
+// basicAuth 是一个简单的HTTP Basic认证中间件
+func basicAuth(username, password string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 获取Authorization头部信息
+		auth := c.GetHeader("Authorization")
+		if len(auth) < 6 || auth[:6] != "Basic " {
+			c.Header("WWW-Authenticate", `Basic realm="to-do-list"`)
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		// 解码凭证
+		payload, err := base64.StdEncoding.DecodeString(auth[6:])
+		if err != nil {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		cred := strings.SplitN(string(payload), ":", 2)
+		if len(cred) != 2 || cred[0] != username || cred[1] != password {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		// 认证成功，继续处理请求
+		c.Next()
+	}
 }
